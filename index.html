@@ -1,0 +1,1211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nihongo Path</title>
+<meta name="description" content="Learn Japanese from zero to simple conversations.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Nihongo">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#F2F5FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1521" media="(prefers-color-scheme: dark)">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<style>
+html{background:var(--bg);-webkit-text-size-adjust:100%;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+:root{color-scheme:light}
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700;900&display=swap">
+<style>
+/* Layout: one mobile-width column. Learn tab = hero card + coloured units, each a zig-zag lesson path. Lessons, intro cards and the speed round take over the screen. Mochi the rice-cake mascot reacts to answers. */
+:root{
+  --bg:#F2F5FA; --surface:#FFFFFF; --surface2:#E7ECF4; --ink:#16202F; --muted:#5A6779; --line:#D9E0EB;
+  --c-indigo:#3F5BD8; --c-indigo-d:#2B409F;
+  --c-sakura:#D6457F; --c-sakura-d:#A3315F;
+  --c-teal:#138D9A;   --c-teal-d:#0C6671;
+  --c-amber:#D9801A;  --c-amber-d:#A35E0F;
+  --c-green:#3D9A47;  --c-green-d:#2B7433;
+  --c-plum:#8350C9;   --c-plum-d:#5F3797;
+  --c-coral:#E0553D;  --c-coral-d:#AD3C28;
+  --c-sky:#2A8BD6;    --c-sky-d:#1B64A0;
+  --primary:var(--c-indigo); --primary-d:var(--c-indigo-d); --on-primary:#FFFFFF;
+  --good:#2F9A3B; --good-bg:#DDF3DE; --good-d:#237A2D;
+  --bad:#D4443B; --bad-bg:#FADFDC; --bad-d:#A9322B;
+  --gold:#E0A011; --gold-d:#B07C0B;
+  --mochi:#FFF7FA; --mochi-line:#E3C3D2;
+  --font:"Zen Maru Gothic","Hiragino Maru Gothic ProN","Noto Sans JP","Yu Gothic",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F1521; --surface:#182030; --surface2:#222C40; --ink:#ECF0F7; --muted:#9BA7BB; --line:#2B3649;
+    --c-indigo:#7C93FF; --c-indigo-d:#4A63D6; --c-sakura:#FF7FAF; --c-sakura-d:#C94F82;
+    --c-teal:#3CC4D3; --c-teal-d:#1F8E9B; --c-amber:#F5A13A; --c-amber-d:#BF7A1E;
+    --c-green:#6CCB73; --c-green-d:#3F9A47; --c-plum:#B08AF0; --c-plum-d:#7F5BC4;
+    --c-coral:#FF8A72; --c-coral-d:#CC5A45; --c-sky:#5BB8F5; --c-sky-d:#2F86BF;
+    --on-primary:#0C1331;
+    --good:#62C25B; --good-bg:#1B3220; --good-d:#3E9A3B;
+    --bad:#FF7B70; --bad-bg:#3A1E1F; --bad-d:#C9524A;
+    --gold:#F3B93B; --gold-d:#B8861E; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F1521; --surface:#182030; --surface2:#222C40; --ink:#ECF0F7; --muted:#9BA7BB; --line:#2B3649;
+  --c-indigo:#7C93FF; --c-indigo-d:#4A63D6; --c-sakura:#FF7FAF; --c-sakura-d:#C94F82;
+  --c-teal:#3CC4D3; --c-teal-d:#1F8E9B; --c-amber:#F5A13A; --c-amber-d:#BF7A1E;
+  --c-green:#6CCB73; --c-green-d:#3F9A47; --c-plum:#B08AF0; --c-plum-d:#7F5BC4;
+  --c-coral:#FF8A72; --c-coral-d:#CC5A45; --c-sky:#5BB8F5; --c-sky-d:#2F86BF;
+  --on-primary:#0C1331;
+  --good:#62C25B; --good-bg:#1B3220; --good-d:#3E9A3B;
+  --bad:#FF7B70; --bad-bg:#3A1E1F; --bad-d:#C9524A;
+  --gold:#F3B93B; --gold-d:#B8861E; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 16px/1.45 var(--font);-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+#app{max-width:520px;margin:0 auto;min-height:100%;display:flex;flex-direction:column;padding-inline:16px}
+svg{display:block}
+:focus-visible{outline:3px solid var(--primary);outline-offset:2px}
+.themed{--primary-soft:color-mix(in srgb,var(--primary) 14%,var(--surface))}
+:root{--primary-soft:color-mix(in srgb,var(--primary) 14%,var(--surface))}
+
+/* top stats */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;padding-block:12px}
+.stat{display:flex;align-items:center;gap:6px;font-weight:900;font-variant-numeric:tabular-nums}
+.stat.fire{color:var(--c-amber)} .stat.xp{color:var(--c-indigo);justify-content:flex-end}
+.lvl{padding:4px 12px;border-radius:99px;background:var(--primary-soft);color:var(--primary);font-weight:900;font-size:14px}
+main.page{flex:1;padding-bottom:110px}
+
+/* hero */
+.hero{display:flex;align-items:center;gap:14px;background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:14px 16px;margin-bottom:6px}
+.hero .txt{min-width:0;flex:1;display:flex;flex-direction:column;gap:6px}
+.hero h1{margin:0;font-size:20px;font-weight:900;line-height:1.2}
+.hero p{margin:0;color:var(--muted);font-size:14px}
+.mini{height:10px;border-radius:99px;background:var(--surface2);overflow:hidden}
+.mini i{display:block;height:100%;border-radius:99px;background:var(--good)}
+.mini.lv i{background:var(--gold)}
+.mrow{display:flex;justify-content:space-between;font-size:12px;font-weight:700;color:var(--muted)}
+
+/* mochi */
+.mochi{flex:none;display:block;overflow:visible}
+.mochi.happy,.mochi.cheer{animation:hop .6s ease-out}
+.mochi.sad{animation:sway .8s ease-in-out}
+.mochi.idle{animation:bob 3.2s ease-in-out infinite}
+@keyframes hop{0%{transform:translateY(0) scale(1,1)}30%{transform:translateY(-14px) scale(.95,1.06)}60%{transform:translateY(0) scale(1.08,.92)}100%{transform:none}}
+@keyframes sway{25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+@keyframes bob{50%{transform:translateY(-3px)}}
+
+/* learn path */
+.unit{margin-top:22px;border-radius:20px;background:var(--primary);color:var(--on-primary);padding:14px 18px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:4px 12px}
+.unit h2{margin:0;font-size:19px;font-weight:900}
+.unit p{margin:0;font-size:13px;opacity:.9;grid-column:1}
+.unit .jp{grid-row:1 / span 2;grid-column:2;font-size:34px;font-weight:900;line-height:1}
+.unit .cnt{grid-column:1 / -1;display:flex;align-items:center;gap:10px;font-size:12px;font-weight:900;margin-top:6px}
+.unit .cnt .mini{flex:1;background:color-mix(in srgb,var(--on-primary) 25%,transparent)}
+.unit .cnt .mini i{background:var(--on-primary)}
+.path{display:flex;flex-direction:column;gap:22px;padding-block:26px 6px}
+.slot{display:flex;flex-direction:column;align-items:center;width:100%}
+.nw{position:relative;transform:translateX(var(--o,0px));display:flex;flex-direction:column;align-items:center;gap:6px}
+.node{width:78px;height:78px;border-radius:50%;border:0;border-bottom:7px solid var(--primary-d);background:var(--primary);color:var(--on-primary);font-size:32px;font-weight:900;display:grid;place-items:center;position:relative;transition:transform .08s}
+.node:active{transform:translateY(4px);border-bottom-width:3px}
+.node.locked{background:var(--surface2);border-bottom-color:var(--line);color:var(--muted)}
+.node.done{background:var(--gold);border-bottom-color:var(--gold-d);color:#2A1D00}
+.node.cur{animation:bob 2s ease-in-out infinite}
+.node.cur::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:4px solid var(--primary);opacity:.35;animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.08);opacity:.1}}
+.node .tick{position:absolute;right:-4px;top:-4px;width:26px;height:26px;border-radius:50%;background:var(--good);color:#fff;display:grid;place-items:center;border:3px solid var(--bg)}
+.tag{position:absolute;top:-34px;left:50%;transform:translateX(-50%);background:var(--surface);color:var(--primary);border:2px solid var(--primary);border-radius:12px;padding:2px 12px;font-size:13px;font-weight:900;letter-spacing:.06em;white-space:nowrap}
+.tag::after{content:"";position:absolute;left:50%;bottom:-8px;width:10px;height:10px;background:var(--surface);border-right:2px solid var(--primary);border-bottom:2px solid var(--primary);transform:translateX(-50%) rotate(45deg)}
+.nlabel{font-weight:700;font-size:14px;color:var(--muted);text-align:center;max-width:140px}
+.stars{display:flex;gap:2px;height:14px}
+.stars svg{width:14px;height:14px}
+.stars .on{color:var(--gold)} .stars .off{color:var(--line)}
+.pop{margin-top:14px;width:min(100%,320px);background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:14px;text-align:center;display:flex;flex-direction:column;gap:10px;animation:rise .2s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(-6px)}}
+.pop b{font-size:18px}
+.pop .pv{color:var(--muted);font-size:20px;font-weight:700;overflow-wrap:anywhere}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:52px;padding:12px 20px;border:0;border-bottom:5px solid var(--primary-d);border-radius:15px;background:var(--primary);color:var(--on-primary);font-weight:900;font-size:16px;letter-spacing:.04em;text-transform:uppercase}
+.btn:active:not(:disabled){transform:translateY(3px);border-bottom-width:2px}
+.btn:disabled{background:var(--surface2);color:var(--muted);border-bottom-color:var(--line);cursor:not-allowed}
+.btn.ghost{background:var(--surface);color:var(--primary);border:2px solid var(--line);border-bottom-width:5px}
+.btn.danger{background:var(--bad);border-bottom-color:var(--bad-d);color:#fff}
+.btn.sm{min-height:42px;width:auto;font-size:14px;padding-inline:16px}
+.btnrow{display:flex;gap:10px}
+.btnrow .btn{flex:1}
+
+/* tab bar */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:6;background:var(--surface);border-top:2px solid var(--line);padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px))}
+.tabs div{max-width:520px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
+.tab{border:0;background:none;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border-radius:12px;font-size:12px;font-weight:700;color:var(--muted)}
+.tab b{font-size:20px;line-height:1.2;font-weight:900}
+.tab.on{color:var(--c-indigo);background:color-mix(in srgb,var(--c-indigo) 14%,var(--surface))}
+
+/* cards & misc pages */
+h1.pt{margin:6px 0 4px;font-size:26px;font-weight:900}
+.lead{color:var(--muted);margin:0 0 16px}
+.card{background:var(--surface);border:2px solid var(--line);border-radius:18px;padding:16px;margin-bottom:12px;display:flex;flex-direction:column;gap:10px}
+.card h3{margin:0;font-size:17px}
+.card p{margin:0;color:var(--muted);font-size:14px}
+.card .cr{display:flex;align-items:center;gap:14px}
+.card .cr>div{min-width:0;flex:1;display:flex;flex-direction:column;gap:2px}
+.weak{display:flex;flex-wrap:wrap;gap:8px}
+.weak span{padding:6px 12px;border-radius:12px;background:var(--bad-bg);color:var(--bad);font-weight:900;font-size:20px}
+.chart-h{margin:22px 0 8px;font-size:13px;font-weight:900;color:var(--muted);letter-spacing:.08em}
+.cgrid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.cell{aspect-ratio:1;border-radius:12px;border:2px solid var(--line);background:var(--surface);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:24px;font-weight:900;padding:0;min-width:0}
+.cell small{font-size:11px;color:var(--muted);font-weight:700}
+.cell.off{opacity:.38;cursor:default}
+.wgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.wcell{border-radius:12px;border:2px solid var(--line);background:var(--surface);padding:10px 12px;text-align:left;min-width:0;display:flex;flex-direction:column;gap:0}
+.wcell b{font-size:19px;overflow-wrap:anywhere}
+.wcell small{color:var(--muted);font-size:13px}
+.wcell.off{opacity:.38;cursor:default}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{flex:1;min-width:56px;padding:10px;border-radius:12px;border:2px solid var(--line);background:var(--surface);font-weight:900}
+.seg button.on{border-color:var(--primary);background:var(--primary-soft);color:var(--primary)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.row>div{min-width:0}
+.kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-bottom:12px}
+.kv div{background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:12px 6px;text-align:center}
+.kv b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.kv span{font-size:12px;color:var(--muted);font-weight:700}
+
+/* lesson shell */
+.lesson{flex:1;display:flex;flex-direction:column;min-height:100%}
+.lh{display:flex;align-items:center;gap:12px;padding-block:14px;position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:4}
+.ib{border:0;background:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--muted);padding:0;flex:none}
+.bar{flex:1;height:16px;border-radius:99px;background:var(--surface2);overflow:hidden;position:relative}
+.bar i{display:block;height:100%;background:var(--good);border-radius:99px;transition:width .35s}
+.bar i::after{content:"";position:absolute;left:6px;right:6px;top:3px;height:4px;border-radius:99px;background:rgba(255,255,255,.35)}
+.hearts{display:flex;align-items:center;gap:5px;color:var(--bad);font-weight:900;font-variant-numeric:tabular-nums;flex:none}
+.hearts.hit svg{animation:sway .5s}
+.combo{flex:none;padding:2px 10px;border-radius:99px;background:var(--c-amber);color:#2A1500;font-weight:900;font-size:13px;animation:hop .4s}
+.lm{flex:1;display:flex;flex-direction:column;gap:16px;padding-block:8px 24px;min-width:0}
+.q{margin:0;font-size:22px;font-weight:900;text-wrap:balance;line-height:1.25}
+.big{align-self:center;text-align:center;font-size:84px;line-height:1.1;font-weight:900;padding:14px 30px;border-radius:22px;border:2px solid var(--line);border-bottom-width:6px;background:var(--surface);display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;min-width:160px;max-width:100%;overflow-wrap:anywhere;color:var(--ink)}
+.big.word{font-size:46px} .big.long{font-size:30px}
+.big small{font-size:16px;color:var(--muted);font-weight:700}
+.speak{align-self:center;width:96px;height:96px;border-radius:26px;border:0;border-bottom:6px solid var(--primary-d);background:var(--primary);color:var(--on-primary);display:grid;place-items:center}
+.speak:active{transform:translateY(3px);border-bottom-width:3px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opts.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.opt{display:flex;align-items:center;gap:12px;width:100%;min-height:58px;padding:12px 16px;text-align:left;border:2px solid var(--line);border-bottom-width:5px;border-radius:15px;background:var(--surface);font-weight:700;font-size:18px;overflow-wrap:anywhere;color:var(--ink);transition:transform .08s}
+.opt:active:not(:disabled){transform:translateY(3px);border-bottom-width:2px}
+.opts.grid .opt{justify-content:center;font-size:40px;font-weight:900;min-height:88px;text-align:center}
+.opts.long .opt{font-size:22px;justify-content:flex-start;text-align:left}
+.opt.sel{border-color:var(--primary);background:var(--primary-soft);color:var(--primary)}
+.opt.right{border-color:var(--good);background:var(--good-bg);color:var(--good);animation:hop .45s}
+.opt.wrong{border-color:var(--bad);background:var(--bad-bg);color:var(--bad);animation:shake .35s}
+.opt:disabled{cursor:default}
+.opt.talk{flex-direction:column;align-items:flex-start;gap:0;font-size:19px}
+.opt.talk small{font-size:13px;font-weight:700;opacity:.75}
+.inp{width:100%;font:inherit;font-size:22px;font-weight:700;padding:14px 16px;border-radius:15px;border:2px solid var(--line);background:var(--surface);color:var(--ink)}
+.inp:focus{border-color:var(--primary);outline:none}
+.mt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 12px}
+.mt .opt{justify-content:center;text-align:center;font-size:20px;min-height:62px}
+.mt .opt.gone{visibility:hidden}
+.slots{min-height:66px;display:flex;flex-wrap:wrap;gap:8px;padding:10px 0;border-block:2px solid var(--line);align-items:center}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.tile{padding:10px 16px;border-radius:13px;border:2px solid var(--line);border-bottom-width:4px;background:var(--surface);font-weight:700;font-size:18px;display:flex;flex-direction:column;align-items:center;line-height:1.2;color:var(--ink)}
+.tile small{font-size:11px;color:var(--muted);font-weight:700}
+.tile:active:not(:disabled){transform:translateY(2px)}
+.tile.used{visibility:hidden}
+.jpline{display:flex;flex-direction:column;gap:2px;font-size:26px;font-weight:900;overflow-wrap:anywhere}
+.jpline small{font-size:15px;color:var(--muted);font-weight:700}
+.jpline .sp{display:inline-grid;vertical-align:middle;color:var(--primary)}
+.chat{display:flex;gap:10px;align-items:flex-end}
+.av{flex:none;width:46px;height:46px;border-radius:50%;background:var(--primary-soft);color:var(--primary);display:grid;place-items:center}
+.bub{position:relative;background:var(--surface);border:2px solid var(--line);border-radius:18px 18px 18px 6px;padding:12px 14px;min-width:0;display:flex;flex-direction:column;gap:2px;flex:1}
+.bub b{font-size:22px;overflow-wrap:anywhere} .bub small{color:var(--muted);font-weight:700}
+.bub em{font-style:normal;color:var(--muted);font-size:14px;border-top:2px dashed var(--line);margin-top:6px;padding-top:6px}
+.bub .sp{position:absolute;right:6px;top:6px;color:var(--primary)}
+.ctx{padding:10px 14px;border-radius:13px;background:var(--primary-soft);color:var(--primary);font-weight:700;font-size:15px}
+
+.lf{margin-inline:-16px;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));border-top:2px solid var(--line);display:flex;flex-direction:column;gap:12px;position:sticky;bottom:0;background:var(--bg)}
+.lf.right{background:var(--good-bg);border-top-color:transparent}
+.lf.wrong{background:var(--bad-bg);border-top-color:transparent}
+.lf .fbrow{display:flex;align-items:center;gap:12px}
+.lf .fb{display:flex;flex-direction:column;gap:2px;min-width:0}
+.lf .fb b{font-size:20px;font-weight:900}
+.lf.right .fb{color:var(--good)} .lf.wrong .fb{color:var(--bad)}
+.lf.right .btn{background:var(--good);border-bottom-color:var(--good-d);color:#fff}
+.lf.wrong .btn{background:var(--bad);border-bottom-color:var(--bad-d);color:#fff}
+.lf .fb span{font-weight:700;overflow-wrap:anywhere}
+
+/* intro cards */
+.dots{flex:1;display:flex;gap:6px;justify-content:center}
+.dots i{flex:1;max-width:28px;height:8px;border-radius:99px;background:var(--surface2)}
+.dots i.on{background:var(--primary)}
+.meet{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding-block:8px 24px;text-align:center}
+.fcard{width:100%;background:var(--surface);border:2px solid var(--line);border-bottom-width:6px;border-radius:26px;padding:22px 16px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.fcard .kana{border:0;background:none;font-size:104px;line-height:1.05;font-weight:900;color:var(--primary);padding:0;overflow-wrap:anywhere;max-width:100%}
+.fcard .kana.word{font-size:52px} .fcard .kana.long{font-size:34px}
+.fcard .rom{font-size:28px;font-weight:900}
+.fcard .en{font-size:22px;font-weight:700;color:var(--ink)}
+.fcard .hint{margin:0;color:var(--muted);font-size:16px;max-width:30ch;text-wrap:balance}
+.say{display:flex;align-items:flex-end;gap:12px;width:100%;text-align:left}
+
+.end{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;padding-block:32px}
+.end h1{margin:0;font-size:30px;font-weight:900}
+.end .lead{margin:0}
+.bigstars{display:flex;gap:8px}
+.bigstars svg{width:46px;height:46px}
+.bigstars .on{color:var(--gold);animation:hop .6s both}
+.bigstars .off{color:var(--line)}
+.bigstars svg:nth-child(2){animation-delay:.15s} .bigstars svg:nth-child(3){animation-delay:.3s}
+.chips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.chip{min-width:104px;border:2px solid var(--line);border-radius:14px;background:var(--surface);padding:10px 14px}
+.chip span{display:block;font-size:12px;font-weight:900;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.chip b{font-size:24px;font-variant-numeric:tabular-nums}
+.end .btn,.end .btnrow{max-width:360px}
+.end .btnrow{width:100%;flex-direction:column}
+.veil{position:fixed;inset:0;z-index:20;background:rgba(8,12,22,.6);display:grid;place-items:center;padding:16px}
+.dlg{width:min(100%,380px);background:var(--surface);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:10px;text-align:center;align-items:center}
+.dlg h2{margin:0;font-size:22px;font-weight:900}
+.dlg p{margin:0 0 6px;color:var(--muted)}
+.dlg .btn{width:100%}
+
+/* speed round */
+.gscore{font-weight:900;font-size:20px;font-variant-numeric:tabular-nums;color:var(--c-amber);flex:none}
+.gbar i{background:var(--c-amber);transition:none}
+.gcenter{flex:1;display:flex;flex-direction:column;justify-content:center;gap:18px;padding-bottom:24px}
+.gopts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.gopts .opt{justify-content:center;text-align:center;font-size:22px;min-height:70px}
+
+.toast{position:fixed;left:16px;right:16px;top:calc(64px + env(safe-area-inset-top,0px));max-width:488px;margin:0 auto;background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:14px;font-weight:700;font-size:14px;z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+.flash{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:30}
+.confetti i{position:absolute;top:-16px;width:10px;height:16px;border-radius:2px;animation:fall 2.4s ease-in forwards}
+@keyframes fall{to{transform:translate(var(--dx),105vh) rotate(var(--rot));opacity:.9}}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .confetti{display:none}
+}
+</style>
+
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* =====================================================
+   COURSE DATA
+   ===================================================== */
+var UNITS = {
+  hira:{jp:'ひらがな', name:'Hiragana', blurb:'Your first 46 sounds', c:'indigo'},
+  dots:{jp:'゛゜', name:'Dots and blends', blurb:'Dots, circles and blended sounds', c:'sakura'},
+  hello:{jp:'こんにちは', name:'Say hello', blurb:'Greetings, polite words, numbers', c:'teal'},
+  me:{jp:'わたし', name:'About me', blurb:'People, family and introductions', c:'amber'},
+  world:{jp:'せかい', name:'Everyday things', blurb:'Food, animals, colors, time', c:'green'},
+  act:{jp:'うごき', name:'Doing things', blurb:'Verbs, questions, likes', c:'plum'},
+  talk:{jp:'はなす', name:'Real conversations', blurb:'Chat with people in Japanese', c:'coral'},
+  kata:{jp:'カタカナ', name:'Katakana', blurb:'For foreign words and names', c:'sky'}
+};
+
+function pairs(s){ return s.split(' ').map(function(t){ var p=t.split(':'); return [p[0],p[1]]; }); }
+function W(s){ return s.split(' ').map(function(t){ var p=t.split(':'); return [p[0],p[1].replace(/_/g,' '),p[2].replace(/_/g,' ')]; }); }
+function tok(s){ return s.split(' ').map(function(t){ var p=t.split(':'); return {jp:p[0],rom:p[1]}; }); }
+function sent(j,e,xe,xj){ return {j:tok(j), e:e.split(' '), xe:xe?xe.split(' '):[], xj:xj?tok(xj):[]}; }
+function X(npc,ctx,good,bad1,bad2){
+  function o(a){ return {jp:a[0],rom:a[1],en:a[2]}; }
+  return {npc:o(npc), ctx:ctx, good:o(good), bad:[o(bad1),o(bad2)]};
+}
+function toKata(s){ return s.replace(/[ぁ-ゖ]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)+0x60); }); }
+function toHira(s){ return s.replace(/[ァ-ヶ]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)-0x60); }); }
+
+var LESSONS = [];
+function CH(id,unit,title,str,tip){ LESSONS.push({id:id,unit:unit,script:'hira',kind:'char',title:title,icon:str.charAt(0),items:pairs(str),tip:tip||''}); }
+function WD(id,unit,title,icon,items,sents,tip){ LESSONS.push({id:id,unit:unit,script:'word',kind:'word',title:title,icon:icon,items:items,sentences:sents||[],tip:tip||''}); }
+function CV(id,unit,title,icon,items,dialog,sents,tip){ LESSONS.push({id:id,unit:unit,script:'word',kind:'convo',title:title,icon:icon,items:items,dialog:dialog,sentences:sents||[],tip:tip||''}); }
+
+/* ---- Hiragana ---- */
+CH('h1','hira','Vowels','あ:a い:i う:u え:e お:o','Japanese has three writing systems. We start with hiragana: 46 simple sounds, one character each. Writing Japanese in English letters is called romaji, and we will show it next to every character. Start with the five vowels. They are short and crisp, like in Spanish: ah, ee, oo, eh, oh.');
+CH('h2','hira','K sounds','か:ka き:ki く:ku け:ke こ:ko','Every row after the vowels just puts a consonant in front of the same five vowels. K + a = ka, K + i = ki, and so on.');
+CH('h3','hira','S sounds','さ:sa し:shi す:su せ:se そ:so','Careful: し is “shi” (like “she”), not “si”. That is one of a few small exceptions in the table.');
+CH('h4','hira','T sounds','た:ta ち:chi つ:tsu て:te と:to','Two more exceptions: ち is “chi” and つ is “tsu” (like the end of “cats”).');
+CH('h5','hira','N sounds','な:na に:ni ぬ:nu ね:ne の:no');
+CH('h6','hira','H sounds','は:ha ひ:hi ふ:fu へ:he ほ:ho','ふ sounds like a soft blow between “f” and “h”. Also, は is read “ha” inside words, but when it is the little word meaning “as for…”, it is read “wa”. You will meet that soon.');
+CH('h7','hira','M sounds','ま:ma み:mi む:mu め:me も:mo');
+CH('h8','hira','Y sounds','や:ya ゆ:yu よ:yo','The Y row only has three characters. There is no “yi” or “ye” in modern Japanese.');
+CH('h9','hira','R sounds','ら:ra り:ri る:ru れ:re ろ:ro','The Japanese R is a quick tap of the tongue, somewhere between R, L and D.');
+CH('h10','hira','W and N','わ:wa を:wo ん:n','を sounds like “o” and is only used as a grammar word. ん is the only character that is a consonant on its own: a plain “n”. That completes the basic hiragana!');
+/* ---- Dots and blends ---- */
+CH('d1','dots','G sounds','が:ga ぎ:gi ぐ:gu げ:ge ご:go','Add two small dots (called ten-ten) to change a sound. か (ka) becomes が (ga).');
+CH('d2','dots','Z sounds','ざ:za じ:ji ず:zu ぜ:ze ぞ:zo','Dots on the S row make a Z row. し (shi) becomes じ (ji).');
+CH('d3','dots','D and B','だ:da で:de ど:do ば:ba び:bi ぶ:bu べ:be ぼ:bo','Dots on the T row make D, and dots on the H row make B.');
+CH('d4','dots','P sounds','ぱ:pa ぴ:pi ぷ:pu ぺ:pe ぽ:po','A small circle (maru) on the H row makes a P row. は (ha) becomes ぱ (pa).');
+CH('d5','dots','Blends','きゃ:kya きゅ:kyu きょ:kyo しゃ:sha しゅ:shu しょ:sho ちゃ:cha ちゅ:chu ちょ:cho','Add a small や, ゆ or よ to blend two sounds into one beat: き + ゃ = きゃ (kya). The small character is written smaller and lower.');
+/* ---- Say hello ---- */
+WD('g1','hello','Hello and goodbye','挨',W('こんにちは:konnichiwa:hello おはよう:ohayou:good_morning こんばんは:konbanwa:good_evening さようなら:sayounara:goodbye おやすみ:oyasumi:good_night ありがとう:arigatou:thank_you'),
+  [sent('おはよう:ohayou ございます:gozaimasu','Good morning','night evening','こんにちは:konnichiwa'),
+   sent('ありがとう:arigatou ございます:gozaimasu','Thank you very much','hello morning','おやすみ:oyasumi')],
+  'Japanese greetings depend on the time of day. こんにちは is for daytime, こんばんは for evening. Add ございます to make it extra polite.');
+WD('g2','hello','Polite words','礼',W('すみません:sumimasen:excuse_me はい:hai:yes いいえ:iie:no おねがいします:onegaishimasu:please どういたしまして:douitashimashite:you\'re_welcome だいじょうぶ:daijoubu:it\'s_okay'),
+  [sent('はい:hai だいじょうぶ:daijoubu です:desu','Yes it\'s okay','no thanks','いいえ:iie'),
+   sent('いいえ:iie だいじょうぶ:daijoubu です:desu','No it\'s okay','yes please','はい:hai')],
+  'すみません does double duty: it means both “excuse me” and “sorry”. Japanese people use it all the time to get attention politely.');
+WD('g3','hello','Numbers 1 to 5','一',W('いち:ichi:one に:ni:two さん:san:three よん:yon:four ご:go:five'),[],
+  'Four can also be said し, but よん is clearer and more common when counting.');
+WD('g4','hello','Numbers 6 to 10','十',W('ろく:roku:six なな:nana:seven はち:hachi:eight きゅう:kyuu:nine じゅう:juu:ten'),[],
+  'Seven is also しち and nine is also く, but なな and きゅう are easier to tell apart when you listen.');
+/* ---- About me ---- */
+WD('m1','me','People','人',W('わたし:watashi:I あなた:anata:you ともだち:tomodachi:friend せんせい:sensei:teacher がくせい:gakusei:student'),
+  [sent('わたし:watashi は:wa がくせい:gakusei です:desu','I am a student','teacher you','せんせい:sensei'),
+   sent('あなた:anata は:wa せんせい:sensei です:desu','You are a teacher','student I','がくせい:gakusei'),
+   sent('ともだち:tomodachi は:wa せんせい:sensei です:desu','My friend is a teacher','student you','わたし:watashi')],
+  'Here is your first sentence pattern: [topic] は [thing] です. は is read “wa” and marks the topic. です means “is / am / are”. Japanese has no “a” or “the”, so the English gets them added.');
+WD('m2','me','Family','家',W('はは:haha:my_mother ちち:chichi:my_father あに:ani:my_older_brother あね:ane:my_older_sister かぞく:kazoku:family'),
+  [sent('ちち:chichi は:wa せんせい:sensei です:desu','My father is a teacher','mother student','はは:haha'),
+   sent('あね:ane は:wa がくせい:gakusei です:desu','My older sister is a student','brother teacher','あに:ani'),
+   sent('わたし:watashi の:no かぞく:kazoku','My family','your friend','ともだち:tomodachi')],
+  'の works like “’s” or “of”: わたしのかぞく = my family. These family words are for your own family. Other people’s families use polite forms that you will learn later.');
+WD('m3','me','This and that','指',W('これ:kore:this それ:sore:that あれ:are:that_over_there ここ:koko:here あそこ:asoko:over_there'),
+  [sent('これ:kore は:wa はは:haha です:desu','This is my mother','father that','ちち:chichi'),
+   sent('あれ:are は:wa ちち:chichi です:desu','That is my father','mother this','はは:haha')],
+  'Japanese has three “that” words: これ is near me, それ is near you, あれ is far from both of us. ここ, そこ, あそこ work the same way for places.');
+WD('m4','me','Introduce yourself','名',W('はじめまして:hajimemashite:nice_to_meet_you よろしくおねがいします:yoroshiku_onegaishimasu:pleased_to_meet_you なまえ:namae:name おげんきですか:ogenki_desu_ka:how_are_you? げんきです:genki_desu:I\'m_fine'),
+  [sent('わたし:watashi の:no なまえ:namae は:wa ゆき:yuki です:desu','My name is Yuki','your Ken','あなた:anata'),
+   sent('おげんき:ogenki です:desu か:ka','How are you','who where','だれ:dare'),
+   sent('げんき:genki です:desu','I am fine','you name','あなた:anata')],
+  'Put か at the end of a sentence and it becomes a question. No question mark needed. はじめまして is only for the first time you meet someone, and よろしくおねがいします is the polite “let’s get along well”.');
+/* ---- Everyday things ---- */
+WD('e1','world','Food and drink','食',W('みず:mizu:water おちゃ:ocha:tea ごはん:gohan:rice さかな:sakana:fish たまご:tamago:egg にく:niku:meat'),
+  [sent('みず:mizu を:o ください:kudasai','Water please','tea fish','おちゃ:ocha'),
+   sent('おちゃ:ocha を:o ください:kudasai','Tea please','water rice','みず:mizu'),
+   sent('これ:kore は:wa たまご:tamago です:desu','This is an egg','fish water','さかな:sakana')],
+  'ください means “please give me”. Say what you want first and put を (read “o”) after it: みずをください = water, please. This one pattern gets you very far in a restaurant.');
+WD('e2','world','Animals','猫',W('ねこ:neko:cat いぬ:inu:dog とり:tori:bird うま:uma:horse うさぎ:usagi:rabbit'),
+  [sent('これ:kore は:wa ねこ:neko です:desu','This is a cat','dog bird','いぬ:inu'),
+   sent('あれ:are は:wa いぬ:inu です:desu','That is a dog','cat horse','ねこ:neko')]);
+WD('e3','world','Colors','色',W('あか:aka:red あお:ao:blue しろ:shiro:white くろ:kuro:black きいろ:kiiro:yellow'),
+  [sent('これ:kore は:wa あか:aka です:desu','This is red','blue white','あお:ao'),
+   sent('ねこ:neko は:wa しろ:shiro です:desu','The cat is white','black dog','くろ:kuro'),
+   sent('いぬ:inu は:wa くろ:kuro です:desu','The dog is black','white cat','しろ:shiro')]);
+WD('e4','world','Time of day','時',W('きょう:kyou:today あした:ashita:tomorrow きのう:kinou:yesterday あさ:asa:morning よる:yoru:night'),[],
+  'Words combine easily: あさ (morning) + ごはん (rice) = あさごはん, which is breakfast. Japanese is full of little building blocks like this.');
+/* ---- Doing things ---- */
+WD('a1','act','Actions','動',W('たべます:tabemasu:eat のみます:nomimasu:drink いきます:ikimasu:go みます:mimasu:watch ききます:kikimasu:listen よみます:yomimasu:read'),
+  [sent('わたし:watashi は:wa みず:mizu を:o のみます:nomimasu','I drink water','eat tea','たべます:tabemasu'),
+   sent('わたし:watashi は:wa ごはん:gohan を:o たべます:tabemasu','I eat rice','drink fish','のみます:nomimasu'),
+   sent('ねこ:neko は:wa さかな:sakana を:o たべます:tabemasu','The cat eats fish','drinks dog','いぬ:inu'),
+   sent('わたし:watashi は:wa いきます:ikimasu','I go','eat drink','あなた:anata')],
+  'Polite verbs end in ます. The word order is: topic は, thing を, verb. The verb always comes last. わたしはみずをのみます is literally “I water drink”.');
+WD('a2','act','Questions','問',W('なん:nan:what だれ:dare:who どこ:doko:where いつ:itsu:when いくら:ikura:how_much'),
+  [sent('これ:kore は:wa なん:nan です:desu か:ka','What is this','who where','だれ:dare'),
+   sent('あなた:anata は:wa だれ:dare です:desu か:ka','Who are you','what where','わたし:watashi'),
+   sent('おちゃ:ocha は:wa いくら:ikura です:desu か:ka','How much is the tea','where water','みず:mizu'),
+   sent('ともだち:tomodachi は:wa どこ:doko です:desu か:ka','Where is my friend','who what','だれ:dare')],
+  'A question word goes exactly where the answer would go. これはみずです (this is water) becomes これはなんですか (what is this?). Add か and you are done.');
+WD('a3','act','Likes and wants','好',W('すき:suki:like ほしい:hoshii:want おいしい:oishii:delicious いい:ii:good とても:totemo:very'),
+  [sent('わたし:watashi は:wa ねこ:neko が:ga すき:suki です:desu','I like cats','dogs eat','いぬ:inu'),
+   sent('これ:kore は:wa とても:totemo おいしい:oishii です:desu','This is very delicious','cat red','あか:aka'),
+   sent('みず:mizu が:ga ほしい:hoshii です:desu','I want water','tea drink','おちゃ:ocha')],
+  'To say you like something, use が: ねこがすきです = I like cats. Wanting works the same way: みずがほしいです = I want water.');
+/* ---- Conversations ---- */
+CV('c1','talk','Meeting someone','会',W('はじめまして:hajimemashite:nice_to_meet_you おげんきですか:ogenki_desu_ka:how_are_you? げんきです:genki_desu:I\'m_fine こちらこそ:kochira_koso:likewise またあした:mata_ashita:see_you_tomorrow さようなら:sayounara:goodbye'),
+  [X(['はじめまして。わたしはけんです。','Hajimemashite. Watashi wa Ken desu.','Nice to meet you. I\'m Ken.'],'Introduce yourself as Yuki.',['はじめまして。わたしはゆきです。','Hajimemashite. Watashi wa Yuki desu.','Nice to meet you. I\'m Yuki.'],['さようなら。','Sayounara.','Goodbye.'],['これはねこです。','Kore wa neko desu.','This is a cat.']),
+   X(['おげんきですか。','Ogenki desu ka?','How are you?'],'Say you are fine, and thank them.',['げんきです。ありがとう。','Genki desu. Arigatou.','I\'m fine. Thanks.'],['みずをください。','Mizu o kudasai.','Water, please.'],['わたしはいぬです。','Watashi wa inu desu.','I am a dog.']),
+   X(['がくせいですか。','Gakusei desu ka?','Are you a student?'],'Say yes, you are a student.',['はい、がくせいです。','Hai, gakusei desu.','Yes, I\'m a student.'],['いいえ、ねこです。','Iie, neko desu.','No, it\'s a cat.'],['おやすみ。','Oyasumi.','Good night.']),
+   X(['よろしくおねがいします。','Yoroshiku onegaishimasu.','Pleased to meet you.'],'Answer with “likewise”.',['こちらこそ。','Kochira koso.','Likewise.'],['おはよう。','Ohayou.','Good morning.'],['どういたしまして。','Douitashimashite.','You\'re welcome.']),
+   X(['またあした。','Mata ashita.','See you tomorrow.'],'Say goodbye and see you tomorrow.',['さようなら。またあした。','Sayounara. Mata ashita.','Goodbye. See you tomorrow.'],['おはよう。','Ohayou.','Good morning.'],['すみません。','Sumimasen.','Excuse me.'])],
+  [sent('わたし:watashi の:no なまえ:namae は:wa ゆき:yuki です:desu','My name is Yuki','your Ken','あなた:anata'),
+   sent('げんき:genki です:desu','I am fine','you name','あなた:anata')],
+  'Your first real chat! Read what the other person says, then pick the best reply. A hint tells you what you want to say. こちらこそ means “likewise” and is the classic answer to よろしくおねがいします.');
+CV('c2','talk','At a restaurant','店',W('いらっしゃいませ:irasshaimase:welcome! ください:kudasai:please_give_me いただきます:itadakimasu:let\'s_eat ごちそうさまでした:gochisousama_deshita:thanks_for_the_meal おいしい:oishii:delicious とても:totemo:very'),
+  [X(['いらっしゃいませ。','Irasshaimase.','Welcome!'],'Greet the staff.',['こんにちは。','Konnichiwa.','Hello.'],['さようなら。','Sayounara.','Goodbye.'],['これはねこです。','Kore wa neko desu.','This is a cat.']),
+   X(['なにをのみますか。','Nani o nomimasu ka?','What will you drink?'],'Order tea.',['おちゃをください。','Ocha o kudasai.','Tea, please.'],['はじめまして。','Hajimemashite.','Nice to meet you.'],['あかです。','Aka desu.','It\'s red.']),
+   X(['たべますか。','Tabemasu ka?','Will you eat?'],'Say yes, you will eat fish.',['はい、さかなをたべます。','Hai, sakana o tabemasu.','Yes, I\'ll eat fish.'],['わたしはがくせいです。','Watashi wa gakusei desu.','I am a student.'],['さようなら。','Sayounara.','Goodbye.']),
+   X(['どうぞ。','Douzo.','Here you go.'],'Say the phrase you say before eating.',['いただきます。','Itadakimasu.','Let\'s eat. (thanks for the food)'],['おやすみ。','Oyasumi.','Good night.'],['どこですか。','Doko desu ka?','Where is it?']),
+   X(['おいしいですか。','Oishii desu ka?','Is it delicious?'],'Say yes, very delicious.',['はい、とてもおいしいです。','Hai, totemo oishii desu.','Yes, it\'s very delicious.'],['いいえ、ねこです。','Iie, neko desu.','No, it\'s a cat.'],['はじめまして。','Hajimemashite.','Nice to meet you.']),
+   X(['ありがとうございました。','Arigatou gozaimashita.','Thank you very much.'],'Thank them for the meal.',['ごちそうさまでした。','Gochisousama deshita.','Thank you for the meal.'],['はじめまして。','Hajimemashite.','Nice to meet you.'],['おはよう。','Ohayou.','Good morning.'])],
+  [sent('おちゃ:ocha を:o ください:kudasai','Tea please','water rice','みず:mizu'),
+   sent('これ:kore は:wa とても:totemo おいしい:oishii です:desu','This is very delicious','cat red','あか:aka')],
+  'Two handy phrases: いただきます before you eat and ごちそうさまでした after. Also なに and なん both mean “what”. Staff say いらっしゃいませ when you walk in; you do not need to answer it.');
+CV('c3','talk','Getting around','道',W('どこ:doko:where えき:eki:station ここ:koko:here みぎ:migi:right ひだり:hidari:left まっすぐ:massugu:straight_ahead'),
+  [X(['すみません。えきはどこですか。','Sumimasen. Eki wa doko desu ka?','Excuse me. Where is the station?'],'Tell them it is straight ahead.',['まっすぐです。','Massugu desu.','It\'s straight ahead.'],['おいしいです。','Oishii desu.','It\'s delicious.'],['おやすみ。','Oyasumi.','Good night.']),
+   X(['えきはみぎですか。','Eki wa migi desu ka?','Is the station on the right?'],'Say no, it is on the left.',['いいえ、ひだりです。','Iie, hidari desu.','No, it\'s on the left.'],['はい、おちゃです。','Hai, ocha desu.','Yes, it\'s tea.'],['いいえ、ねこです。','Iie, neko desu.','No, it\'s a cat.']),
+   X(['ここはどこですか。','Koko wa doko desu ka?','Where is this place?'],'Say it is the station.',['ここはえきです。','Koko wa eki desu.','This is the station.'],['ここはさかなです。','Koko wa sakana desu.','This is fish.'],['はじめまして。','Hajimemashite.','Nice to meet you.']),
+   X(['ありがとうございます。','Arigatou gozaimasu.','Thank you.'],'',['どういたしまして。','Douitashimashite.','You\'re welcome.'],['いただきます。','Itadakimasu.','Let\'s eat.'],['おやすみ。','Oyasumi.','Good night.']),
+   X(['ひだりですか、みぎですか。','Hidari desu ka, migi desu ka?','Left or right?'],'Say it is on the right.',['みぎです。','Migi desu.','It\'s on the right.'],['ひだりです。','Hidari desu.','It\'s on the left.'],['おいしいです。','Oishii desu.','It\'s delicious.'])],
+  [sent('えき:eki は:wa どこ:doko です:desu か:ka','Where is the station','who what','だれ:dare'),
+   sent('えき:eki は:wa みぎ:migi です:desu','The station is on the right','left here','ひだり:hidari')],
+  'Now you can ask and answer where things are. To ask, use [place] は どこですか. To answer, use [direction] です. Notice that some replies fit the question but not what you want to say, so read the hint.');
+CV('c4','talk','Final chat','話',W('おなまえは:onamae_wa:what\'s_your_name? はい:hai:yes ねこがすきです:neko_ga_suki_desu:I_like_cats みずをのみます:mizu_o_nomimasu:I_drink_water さようなら:sayounara:goodbye'),
+  [X(['はじめまして。おなまえは？','Hajimemashite. Onamae wa?','Nice to meet you. What\'s your name?'],'Say your name is Yuki.',['わたしのなまえはゆきです。','Watashi no namae wa Yuki desu.','My name is Yuki.'],['わたしはねこです。','Watashi wa neko desu.','I am a cat.'],['みずをください。','Mizu o kudasai.','Water, please.']),
+   X(['がくせいですか。','Gakusei desu ka?','Are you a student?'],'Say yes.',['はい、がくせいです。','Hai, gakusei desu.','Yes, I\'m a student.'],['いいえ、おちゃです。','Iie, ocha desu.','No, it\'s tea.'],['さようなら。','Sayounara.','Goodbye.']),
+   X(['ねこがすきですか。','Neko ga suki desu ka?','Do you like cats?'],'Say yes, you like cats.',['はい、ねこがすきです。','Hai, neko ga suki desu.','Yes, I like cats.'],['いいえ、ごはんです。','Iie, gohan desu.','No, it\'s rice.'],['はい、さようなら。','Hai, sayounara.','Yes, goodbye.']),
+   X(['なにをのみますか。','Nani o nomimasu ka?','What will you drink?'],'Say you will drink water.',['みずをのみます。','Mizu o nomimasu.','I\'ll drink water.'],['みずをたべます。','Mizu o tabemasu.','I\'ll eat water.'],['おやすみ。','Oyasumi.','Good night.']),
+   X(['ともだちはどこですか。','Tomodachi wa doko desu ka?','Where is your friend?'],'Say your friend is here.',['ともだちはここです。','Tomodachi wa koko desu.','My friend is here.'],['ともだちはおいしいです。','Tomodachi wa oishii desu.','My friend is delicious.'],['ともだちはみずです。','Tomodachi wa mizu desu.','My friend is water.']),
+   X(['さようなら。またあした。','Sayounara. Mata ashita.','Goodbye. See you tomorrow.'],'Say goodbye and see you tomorrow.',['さようなら。またあした。','Sayounara. Mata ashita.','Goodbye. See you tomorrow.'],['おはよう。','Ohayou.','Good morning.'],['はじめまして。','Hajimemashite.','Nice to meet you.'])],
+  [sent('わたし:watashi は:wa ごはん:gohan を:o たべます:tabemasu','I eat rice','drink fish','のみます:nomimasu'),
+   sent('わたし:watashi は:wa ねこ:neko が:ga すき:suki です:desu','I like cats','dogs eat','いぬ:inu')],
+  'This is the boss level: a whole chat that mixes everything. Take your time. If you get through it, you can introduce yourself, answer simple questions, order a drink and say goodbye in Japanese.');
+/* ---- Katakana (generated from the hiragana rows) ---- */
+function hiraItems(ids){ var out=[]; ids.forEach(function(id){ LESSONS.filter(function(l){return l.id===id;})[0].items.forEach(function(p){ out.push([toKata(p[0]),p[1]]); }); }); return out; }
+function KC(id,title,ids,tip){ var it=hiraItems(ids); LESSONS.push({id:id,unit:'kata',script:'kata',kind:'char',title:title,icon:it[0][0],items:it,tip:tip||''}); }
+KC('k1','Vowels and K',['h1','h2'],'Katakana is a second set of characters with exactly the same sounds as hiragana, but with sharper, straighter shapes. It is used for foreign words, like コーヒー (coffee), and for many names.');
+KC('k2','S and T',['h3','h4']);
+KC('k3','N and H',['h5','h6']);
+KC('k4','M and Y',['h7','h8']);
+KC('k5','R, W and N',['h9','h10']);
+KC('k6','G and Z',['d1','d2'],'The same two dots work in katakana: カ becomes ガ.');
+KC('k7','D and B',['d3']);
+KC('k8','P sounds',['d4']);
+WD('kw','kata','Katakana words','茶',W('コーヒー:koohii:coffee パン:pan:bread ホテル:hoteru:hotel トイレ:toire:restroom タクシー:takushii:taxi ケーキ:keeki:cake'),
+  [sent('コーヒー:koohii を:o ください:kudasai','Coffee please','tea bread','おちゃ:ocha'),
+   sent('トイレ:toire は:wa どこ:doko です:desu か:ka','Where is the restroom','who what','だれ:dare'),
+   sent('わたし:watashi は:wa パン:pan を:o たべます:tabemasu','I eat bread','drink cake','のみます:nomimasu')],
+  'The long dash ー stretches the sound before it: コーヒー is “koo-hii”. Katakana loanwords are all over menus and signs, so these will help you right away.');
+
+var ALL = [];
+LESSONS.forEach(function(l,li){
+  l.li = li;
+  l.items = l.items.map(function(r){
+    var o = {jp:r[0], rom:r[1], en:r[2]||null, script:l.script, li:li, lid:l.id};
+    ALL.push(o); return o;
+  });
+});
+var ALLU = []; (function(){ var seen={}; ALL.forEach(function(x){ var k=x.script+x.jp; if(!seen[k]){ seen[k]=1; ALLU.push(x); } }); })();
+
+/* Memory hooks for hiragana */
+var MN = {
+ 'あ':'An apple being sliced. Say “ah!”','い':'Two eels standing side by side. “ee”','う':'A tilted U-turn sign. “oo”','え':'An exotic bird mid-flight. “eh”','お':'An ocean wave rolling over. “oh”',
+ 'か':'A karate chop swinging.','き':'A key with two teeth.','く':'A cuckoo’s beak, open wide.','け':'A keg with a handle.','こ':'Two koi fish stacked up.',
+ 'さ':'A samurai’s swirling sash.','し':'A fishing hook. Think “she”.','す':'A swirl of soup. “soo”','せ':'A seesaw with a post.','そ':'A zig-zag of sewing thread.',
+ 'た':'It looks like the letters “t” and “a”.','ち':'A cheerleader mid-kick. “chee”','つ':'A tsunami wave curling over.','て':'A telephone pole with its wire.','と':'A toe with a thorn in it.',
+ 'な':'A nun kneeling in prayer.','に':'A bent knee. Think “knee”.','ぬ':'Noodles tangled up. “nuu”','ね':'A cat (neko) with a curly tail.','の':'A “no entry” swirl.',
+ 'は':'A happy “h” laughing: ha ha!','ひ':'A smiling mouth. “hee hee”','ふ':'Mount Fuji with clouds around it.','へ':'A hill. It also looks like a roof: “he”.','ほ':'A hose-house: ho ho!',
+ 'ま':'A mama bending over a cooking pot.','み':'It looks like the number 21: “mi”.','む':'A cow saying “moo” with a curly tail.','め':'An eye looking at me. “me”','も':'A fishhook with more worms. “mo”',
+ 'や':'A yak with its horns up.','ゆ':'A fish swimming: “you”.','よ':'A yo-yo hanging from a string.',
+ 'ら':'A rabbit’s ear and body.','り':'Two reeds, standing tall. “ree”','る':'A looping route with a knot. “roo”','れ':'A rail with a bend. “reh”','ろ':'A winding road, like a number 3.',
+ 'わ':'A wasp saying “wah!”','を':'A person waving. Only used as a grammar word.','ん':'A cursive letter “n”.'
+};
+function dotBase(jp){
+  var c=jp.charCodeAt(0);
+  if(/^[がぎぐげござじずぜぞだでどばびぶべぼ]$/.test(jp)) return {b:String.fromCharCode(c-1),t:'dots'};
+  if(/^[ぱぴぷぺぽ]$/.test(jp)) return {b:String.fromCharCode(c-2),t:'circle'};
+  return null;
+}
+function hintFor(it){
+  if(it.script==='hira'){
+    if(MN[it.jp]) return MN[it.jp];
+    var d=dotBase(it.jp);
+    if(d) return 'Take '+d.b+' and add '+(d.t==='dots'?'two small dots':'a small circle')+'. It becomes '+it.rom+'.';
+    if(it.jp.length===2) return 'Blend '+it.jp.charAt(0)+' with a small '+it.jp.charAt(1)+' in one beat: '+it.rom+'.';
+    return '';
+  }
+  if(it.script==='kata') return 'Same sound as the hiragana '+toHira(it.jp)+' ('+it.rom+').';
+  return '';
+}
+
+/* =====================================================
+   STATE
+   ===================================================== */
+var KEY='nihongo-path-v2';
+function today(){ return new Date().toLocaleDateString('en-CA'); }
+function yesterday(){ var d=new Date(); d.setDate(d.getDate()-1); return d.toLocaleDateString('en-CA'); }
+var S={listen:true,xp:0,streak:0,last:'',done:{},stars:{},weak:{},day:'',dayXp:0,goal:30,muted:false,best:0,openAll:false};
+try{ var sv=JSON.parse(localStorage.getItem(KEY)); if(sv) for(var k in sv) S[k]=sv[k]; }catch(e){}
+var cloud={state:'checking',doc:null,last:'',busy:false,timer:0,again:false};
+function save(){
+  S.updated=Date.now();
+  try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){}
+  queueCloud();
+}
+function maxObj(a,b){ var o={}, k; a=a||{}; b=b||{}; for(k in a) o[k]=a[k]; for(k in b) o[k]=Math.max(o[k]||0,b[k]); return o; }
+function mergeState(a,b){
+  var ra=a.resetAt||0, rb=b.resetAt||0;
+  if(ra>rb) return a; if(rb>ra) return b;
+  var m={}, k; for(k in a) m[k]=a[k];
+  var newer=(b.updated||0)>(a.updated||0)?b:a;
+  m.xp=Math.max(a.xp||0,b.xp||0);
+  m.done=maxObj(a.done,b.done); m.stars=maxObj(a.stars,b.stars); m.best=Math.max(a.best||0,b.best||0);
+  m.weak=newer.weak||{};
+  var la=a.last||'', lb=b.last||'', pick=la>=lb?a:b;
+  m.last=pick.last||''; m.streak=pick.streak||0;
+  var da=a.day||'', db_=b.day||'', pd=da>=db_?a:b; m.day=pd.day||''; m.dayXp=pd.dayXp||0;
+  m.goal=newer.goal; m.muted=newer.muted; m.listen=newer.listen; m.openAll=newer.openAll;
+  m.updated=Math.max(a.updated||0,b.updated||0);
+  return m;
+}
+function cloudWrite(){
+  if(!cloud.doc||cloud.busy) return;
+  var json=JSON.stringify(S);
+  if(json===cloud.last){ cloud.state='saved'; refreshStatus(); return; }
+  cloud.busy=true;
+  cloud.doc.set({v:2,updated:S.updated||Date.now(),json:json}).then(function(){
+    cloud.last=json; cloud.state='saved';
+  }).catch(function(){
+    cloud.state='error';
+  }).then(function(){
+    cloud.busy=false; refreshStatus();
+    if(cloud.again){ cloud.again=false; queueCloud(); }
+  });
+}
+function queueCloud(){
+  if(!cloud.doc) return;
+  if(cloud.busy){ cloud.again=true; return; }
+  clearTimeout(cloud.timer); cloud.timer=setTimeout(cloudWrite,1200);
+}
+function refreshStatus(){ if(view==='learn'&&tab==='me') render(); }
+function applyCloud(remote){
+  var before=JSON.stringify(S);
+  var merged=mergeState(S,remote);
+  if(merged!==S){ for(var k in S) delete S[k]; for(var k2 in merged) S[k2]=merged[k2]; }
+  try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){}
+  return JSON.stringify(S)!==before;
+}
+function initCloud(){
+  if(!window.claude||!window.claude.use){ cloud.state='local'; return; }
+  Promise.all([window.claude.use('db'),window.claude.use('user')]).then(function(r){
+    var db=r[0], user=r[1];
+    if(!db||!user){ cloud.state='local'; refreshStatus(); return null; }
+    return user.id().then(function(uid){
+      if(!uid){ cloud.state='local'; refreshStatus(); return null; }
+      cloud.doc=db.doc('data/users/'+uid+'/save');
+      return cloud.doc.get();
+    }).then(function(snap){
+      if(!snap) return;
+      if(snap.exists){
+        var d=snap.data()||{}, remote=null;
+        try{ remote=JSON.parse(d.json); }catch(e){}
+        if(remote){ cloud.last=d.json; var changed=applyCloud(remote); if(changed&&view==='learn') render(); }
+      }
+      cloud.state='saved';
+      var json=JSON.stringify(S);
+      if(json!==cloud.last) cloudWrite(); else refreshStatus();
+    });
+  }).catch(function(){ cloud.state='local'; refreshStatus(); });
+}
+function liveStreak(){ return (S.last===today()||S.last===yesterday())?S.streak:0; }
+function todayXp(){ return S.day===today()?S.dayXp:0; }
+function level(){ return Math.floor(S.xp/100)+1; }
+function award(n){
+  if(S.last!==today()){ S.streak=(S.last===yesterday())?S.streak+1:1; S.last=today(); }
+  if(S.day!==today()){ S.day=today(); S.dayXp=0; }
+  S.dayXp+=n; S.xp+=n; save();
+}
+function unitOf(l){ return UNITS[l.unit]; }
+
+/* =====================================================
+   HELPERS, ICONS, MASCOT, AUDIO
+   ===================================================== */
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function pick(a,n){ return shuffle(a).slice(0,n); }
+function norm(s){ return String(s).toLowerCase().replace(/[^a-z]/g,''); }
+function variants(r){
+  var m=[['shi','si'],['chi','ti'],['tsu','tu'],['fu','hu'],['ji','zi'],['ou','o'],['uu','u'],['oo','o'],['ii','i'],['wo','o']];
+  var set=[norm(r)];
+  m.forEach(function(p){ set.slice().forEach(function(v){ var w=v.split(p[0]).join(p[1]); if(set.indexOf(w)<0) set.push(w); }); });
+  return set;
+}
+var I={
+  heart:'<svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 4.5 6.4 4.5c2 0 3.5 1.1 4.3 2.4h.6c.8-1.3 2.3-2.4 4.3-2.4 3.7 0 5.5 3.9 4 7.3C19.5 16.4 12 21 12 21z"/></svg>',
+  flame:'<svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M12 2c1 3.5 4.5 5.5 4.5 10a4.5 4.5 0 0 1-9 0c0-1.7.7-3 1.8-4 .2 1.2.9 2 1.7 2.2C11 8.3 10.8 5 12 2z"/></svg>',
+  bolt:'<svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg>',
+  speaker:'<svg viewBox="0 0 24 24" width="44" height="44"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1c2.9.9 5 3.5 5 6.7s-2.1 5.8-5 6.7v2.1c4-1 7-4.6 7-8.8s-3-7.8-7-8.8z"/></svg>',
+  spk:'<svg viewBox="0 0 24 24" width="22" height="22"><path fill="currentColor" d="M3 9v6h4l5 4V5L7 9H3zm13.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4z"/></svg>',
+  check:'<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>',
+  x:'<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  star:'<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z"/></svg>',
+  person:'<svg viewBox="0 0 24 24" width="26" height="26"><circle cx="12" cy="8" r="4.2" fill="currentColor"/><path fill="currentColor" d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7z"/></svg>'
+};
+function starsHTML(n){ var o='<div class="stars" aria-label="'+n+' of 3 stars">'; for(var i=1;i<=3;i++) o+='<span class="'+(i<=n?'on':'off')+'">'+I.star+'</span>'; return o+'</div>'; }
+function bigStars(n){ var o='<div class="bigstars">'; for(var i=1;i<=3;i++) o+='<span class="'+(i<=n?'on':'off')+'">'+I.star+'</span>'; return o+'</div>'; }
+
+function mochi(mood,size){
+  var eyes, mouth, extra='';
+  if(mood==='happy'||mood==='cheer'){
+    eyes='<path d="M29 47q6-9 12 0M59 47q6-9 12 0" fill="none" stroke="#3A2A35" stroke-width="3.5" stroke-linecap="round"/>';
+    mouth='<path d="M41 57q9 11 18 0z" fill="#E0657F" stroke="#3A2A35" stroke-width="3" stroke-linejoin="round"/>';
+  } else if(mood==='sad'){
+    eyes='<circle cx="35" cy="49" r="4.5" fill="#3A2A35"/><circle cx="65" cy="49" r="4.5" fill="#3A2A35"/>';
+    mouth='<path d="M42 64q8-8 16 0" fill="none" stroke="#3A2A35" stroke-width="3.5" stroke-linecap="round"/>';
+    extra='<path d="M31 56q-3 6 0 8q3-2 0-8z" fill="#7FB8F0"/>';
+  } else {
+    eyes='<circle cx="35" cy="47" r="4.5" fill="#3A2A35"/><circle cx="65" cy="47" r="4.5" fill="#3A2A35"/>';
+    mouth='<path d="M43 58q7 6 14 0" fill="none" stroke="#3A2A35" stroke-width="3.5" stroke-linecap="round"/>';
+  }
+  var arms = mood==='cheer' ? '<path d="M14 54q-8-8-6-18M86 54q8-8 6-18" fill="none" stroke="var(--mochi-line)" stroke-width="5" stroke-linecap="round"/>' : '';
+  return '<svg class="mochi '+mood+'" viewBox="0 0 100 92" width="'+size+'" height="'+Math.round(size*.92)+'" role="img" aria-label="Mochi the rice cake mascot">'+arms+
+    '<path d="M50 14c25 0 41 15 41 37 0 19-14 31-41 31S9 70 9 51C9 29 25 14 50 14z" fill="var(--mochi)" stroke="var(--mochi-line)" stroke-width="3"/>'+
+    '<path d="M50 14c-3-8 3-13 12-11-1 9-6 13-12 11z" fill="#4DAA57"/>'+
+    '<circle cx="23" cy="59" r="7" fill="#FF9BB5" opacity=".55"/><circle cx="77" cy="59" r="7" fill="#FF9BB5" opacity=".55"/>'+eyes+mouth+extra+'</svg>';
+}
+
+var jaVoice=null, utter=null, lastWarn=0, voiceInfo='';
+function hasSpeech(){ try{ return !!(window.speechSynthesis&&window.SpeechSynthesisUtterance); }catch(e){ return false; } }
+function canListen(){ return S.listen!==false && hasSpeech(); }
+function loadVoices(){
+  try{ var v=window.speechSynthesis.getVoices()||[]; jaVoice=v.filter(function(x){ return /^ja/i.test(String(x.lang||'').replace('_','-')); })[0]||null; }
+  catch(e){ jaVoice=null; }
+}
+try{ loadVoices(); window.speechSynthesis.onvoiceschanged=loadVoices; }catch(e){}
+function toast(msg){
+  try{
+    var t=document.getElementById('toast');
+    if(!t){ t=document.createElement('div'); t.id='toast'; t.className='toast'; t.setAttribute('role','status'); document.body.appendChild(t); }
+    t.textContent=msg; t.classList.add('show');
+    clearTimeout(toast.h); toast.h=setTimeout(function(){ t.classList.remove('show'); },6000);
+  }catch(e){}
+}
+function warnAudio(){
+  if(Date.now()-lastWarn<20000) return; lastWarn=Date.now();
+  toast('No sound yet. Turn off silent mode, raise the volume, and check the Me tab to test the voice.');
+}
+function speak(t,cb){
+  if(!hasSpeech()){ if(cb) cb('unsupported'); return; }
+  try{
+    var ss=window.speechSynthesis; loadVoices();
+    var go=function(){
+      var u=new SpeechSynthesisUtterance(t); u.lang='ja-JP'; u.rate=.85; u.volume=1;
+      if(jaVoice) u.voice=jaVoice;
+      var started=false;
+      u.onstart=function(){ started=true; if(cb) cb('ok'); };
+      u.onerror=function(e){ var er=(e&&e.error)||'unknown'; if(er==='interrupted'||er==='canceled') return; warnAudio(); if(cb) cb('error:'+er); };
+      utter=u;
+      try{ ss.resume(); }catch(e){}
+      ss.speak(u);
+      setTimeout(function(){ if(!started){ warnAudio(); if(cb) cb('silent'); } },2600);
+    };
+    if(ss.speaking||ss.pending){ ss.cancel(); setTimeout(go,70); } else go();
+  }catch(e){ if(cb) cb('error:'+(e&&e.message)); }
+}
+document.addEventListener('pointerdown',function(){
+  if(!hasSpeech()) return;
+  try{ var u=new SpeechSynthesisUtterance(' '); u.volume=0; window.speechSynthesis.speak(u); }catch(e){}
+},{once:true});
+var AC;
+function tone(f,d,type,v,delay){
+  if(S.muted) return;
+  try{
+    AC=AC||new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume();
+    var o=AC.createOscillator(), g=AC.createGain(), t=AC.currentTime+(delay||0);
+    o.type=type||'sine'; o.frequency.value=f; g.gain.setValueAtTime(v||.06,t); g.gain.exponentialRampToValueAtTime(.0001,t+d);
+    o.connect(g); g.connect(AC.destination); o.start(t); o.stop(t+d+.02);
+  }catch(e){}
+}
+function sndGood(){ tone(660,.12); tone(880,.2,'sine',.06,.1); }
+function sndBad(){ tone(190,.28,'sawtooth',.035); }
+function sndWin(){ tone(523,.12); tone(659,.12,'sine',.06,.12); tone(784,.12,'sine',.06,.24); tone(1047,.3,'sine',.06,.36); }
+function confetti(){
+  try{
+    var box=document.createElement('div'); box.className='confetti';
+    var cols=['--c-indigo','--c-sakura','--c-teal','--c-amber','--c-green','--c-plum','--c-coral','--c-sky'];
+    for(var i=0;i<46;i++){
+      var p=document.createElement('i');
+      p.style.left=(Math.random()*100)+'%';
+      p.style.background='var('+cols[i%cols.length]+')';
+      p.style.setProperty('--dx',((Math.random()-.5)*160)+'px');
+      p.style.setProperty('--rot',(Math.random()*720-360)+'deg');
+      p.style.animationDelay=(Math.random()*.6)+'s';
+      box.appendChild(p);
+    }
+    document.body.appendChild(box); setTimeout(function(){ if(box.parentNode) box.parentNode.removeChild(box); },3400);
+  }catch(e){}
+}
+
+/* =====================================================
+   EXERCISE ENGINE
+   ===================================================== */
+function labelOf(x){ return x.script==='word'?x.en:x.rom; }
+function poolFor(item,upTo){ return ALL.filter(function(x){ return x.script===item.script && x.li<=upTo && x.jp!==item.jp; }); }
+function distract(item,upTo,f){
+  var seen=[f(item)], out=[];
+  shuffle(poolFor(item,upTo)).forEach(function(x){ if(out.length<3 && seen.indexOf(f(x))<0){ seen.push(f(x)); out.push(f(x)); } });
+  return out;
+}
+function mkChoice(item,kind,upTo){
+  var word=item.script==='word';
+  if(kind==='see') return {t:'choice',item:item,prompt:word?'What does this mean?':'What sound does this make?',big:item.jp,sub:word?item.rom:'',speak:item.jp,
+    options:shuffle([labelOf(item)].concat(distract(item,upTo,labelOf))),answer:labelOf(item)};
+  var opts=shuffle([item.jp].concat(distract(item,upTo,function(x){return x.jp;})));
+  var longOpts=opts.some(function(o){return o.length>4;});
+  if(kind==='find') return {t:'choice',item:item,jpOpts:true,longOpts:longOpts,prompt:word?'Which one means “'+item.en+'”?':'Which one is “'+item.rom+'”?',options:opts,answer:item.jp};
+  return {t:'choice',item:item,jpOpts:true,longOpts:longOpts,listen:true,prompt:'Tap what you hear',speak:item.jp,options:opts,answer:item.jp};
+}
+function mkType(item){ return {t:'type',item:item,prompt:'Type this in romaji',big:item.jp,speak:item.jp,answers:variants(item.rom),show:item.rom}; }
+function mkMatch(items){
+  var seen=[], prs=[];
+  shuffle(items).forEach(function(x){ if(prs.length<5 && seen.indexOf(labelOf(x))<0){ seen.push(labelOf(x)); prs.push({id:x.jp,a:x.jp,b:labelOf(x)}); } });
+  return {t:'match',prompt:'Tap the matching pairs',pairs:prs};
+}
+function jpText(s){ return s.j.map(function(t){return t.jp;}).join(''); }
+function mkBank(s,dir){
+  var rom=s.j.map(function(t){return t.rom;}).join(' ');
+  if(dir==='en') return {t:'bank',prompt:'Translate this sentence',head:jpText(s),sub:rom,speak:jpText(s),
+    tiles:shuffle(s.e.concat(s.xe).map(function(w){return {t:w};})),answer:s.e.slice(),show:s.e.join(' ')};
+  return {t:'bank',prompt:'Say it in Japanese',head:s.e.join(' '),sub:'',en:true,speak:jpText(s),
+    tiles:shuffle(s.j.concat(s.xj).map(function(x){return {t:x.jp,s:x.rom};})),answer:s.j.map(function(t){return t.jp;}),show:jpText(s)+' ('+rom+')'};
+}
+function mkTalk(x){
+  var opts=shuffle([x.good].concat(x.bad)), rmap={}, emap={};
+  opts.forEach(function(o){ rmap[o.jp]=o.rom; emap[o.jp]=o.en; });
+  return {t:'choice',talk:true,prompt:'Pick the best reply',npc:x.npc,ctx:x.ctx,speak:x.npc.jp,
+    options:opts.map(function(o){return o.jp;}),rmap:rmap,answer:x.good.jp,meaning:x.good.en,romAns:x.good.rom};
+}
+function buildSession(l,upTo){
+  var items=l.items;
+  if(l.kind==='convo'){
+    var ex=l.dialog.map(mkTalk), extra=[];
+    pick(l.sentences,2).forEach(function(s){ extra.push(mkBank(s,'jp')); });
+    extra.push(mkMatch(items));
+    if(canListen()) pick(items,2).forEach(function(i){ extra.push(mkChoice(i,'listen',upTo)); });
+    return ex.concat(shuffle(extra));
+  }
+  var n=items.length, big=n>6;
+  var see=items.map(function(i){return mkChoice(i,'see',upTo);});
+  var rest=pick(items,big?2:3).map(function(i){return mkChoice(i,'find',upTo);});
+  if(canListen()) rest=rest.concat(pick(items,big?1:2).map(function(i){return mkChoice(i,'listen',upTo);}));
+  var typable=items.filter(function(i){return norm(i.rom).length<=12;});
+  rest=rest.concat(pick(typable,big?1:2).map(mkType));
+  rest.push(mkMatch(items));
+  if(l.sentences&&l.sentences.length){
+    pick(l.sentences,2).forEach(function(s,i){ rest.push(mkBank(s,i%2?'jp':'en')); });
+  }
+  return see.slice(0,3).concat(shuffle(see.slice(3).concat(rest)));
+}
+function buildPractice(items,upTo){
+  var q=[];
+  items.forEach(function(i){ q.push(mkChoice(i,'see',upTo)); });
+  pick(items,3).forEach(function(i){ q.push(mkChoice(i,'find',upTo)); });
+  if(canListen()) pick(items,2).forEach(function(i){ q.push(mkChoice(i,'listen',upTo)); });
+  pick(items.filter(function(i){return norm(i.rom).length<=12;}),2).forEach(function(i){ q.push(mkType(i)); });
+  q.push(mkMatch(items));
+  return shuffle(q).slice(0,10);
+}
+
+/* =====================================================
+   FLOW
+   ===================================================== */
+var view='learn', tab='learn', openNode=null, L=null, T=null, G=null, resetAsk=false;
+var app=document.getElementById('app');
+
+function nextIndex(){ for(var i=0;i<LESSONS.length;i++) if(!S.done[LESSONS[i].id]) return i; return LESSONS.length; }
+function lessonById(id){ return LESSONS.filter(function(x){return x.id===id;})[0]; }
+function startIntro(id){
+  var l=lessonById(id), cards=[];
+  if(l.tip) cards.push({tip:l.tip});
+  l.items.forEach(function(it){ cards.push({item:it}); });
+  T={lesson:l,cards:cards,i:0,auto:true}; view='intro'; render(); window.scrollTo(0,0);
+}
+function startQuiz(id){
+  var l=lessonById(id); loadVoices(); L=null;
+  newSession({lesson:l,practice:false,q:buildSession(l,l.li)});
+}
+function startPractice(weakMode){
+  var learned=ALLU.filter(function(x){return S.done[LESSONS[x.li].id];});
+  if(!learned.length) return;
+  var pool=learned;
+  if(weakMode){
+    var w=learned.filter(function(x){return S.weak[x.jp]>0;}).sort(function(a,b){return S.weak[b.jp]-S.weak[a.jp];});
+    if(w.length){ var sc0=w[0].script; pool=w.filter(function(x){return x.script===sc0;}); }
+  }
+  var scripts=[]; pool.forEach(function(x){ if(scripts.indexOf(x.script)<0) scripts.push(x.script); });
+  var sc=pick(scripts,1)[0], sp=pool.filter(function(x){return x.script===sc;});
+  var items=pick(sp,Math.min(6,sp.length));
+  var upTo=Math.max.apply(null,learned.map(function(x){return x.li;}));
+  loadVoices();
+  newSession({lesson:{id:'practice',title:'Practice',unit:items[0]?(items[0].script==='kata'?'kata':items[0].script==='hira'?'hira':'hello'):'hira'},practice:true,weak:!!weakMode,q:buildPractice(items,upTo)});
+}
+function newSession(o){
+  L={lesson:o.lesson,practice:o.practice,weak:o.weak,q:o.q,i:0,hearts:5,passed:0,total:o.q.length,mistakes:0,combo:0,quitAsk:false,mood:'idle',hit:false};
+  view='lesson'; initEx(); render(); window.scrollTo(0,0);
+}
+function initEx(){
+  var ex=L.q[L.i];
+  L.sel=null; L.typed=''; L.bank=[]; L.status='idle'; L.flash=null; L.auto=!!(ex&&(ex.listen||ex.talk)); L.hit=false;
+  if(ex&&ex.t==='match'){ var ids=ex.pairs.map(function(p){return p.id;}); L.m={L:shuffle(ids),R:shuffle(ids),pend:null,done:[]}; }
+}
+function isCorrect(ex){
+  if(ex.t==='choice') return L.sel!==null && ex.options[L.sel]===ex.answer;
+  if(ex.t==='type') return ex.answers.indexOf(norm(L.typed))>=0;
+  if(ex.t==='bank') return L.bank.map(function(i){return ex.tiles[i].t;}).join('|')===ex.answer.join('|');
+  return true;
+}
+function canCheck(ex){
+  if(ex.t==='choice') return L.sel!==null;
+  if(ex.t==='type') return norm(L.typed).length>0;
+  if(ex.t==='bank') return L.bank.length>0;
+  return false;
+}
+function answerText(ex){
+  if(ex.t==='choice'){
+    if(ex.talk) return ex.answer+' ('+ex.romAns+') = '+ex.meaning;
+    return ex.jpOpts ? ex.answer+' ('+ex.item.rom+')' : ex.answer;
+  }
+  if(ex.t==='type') return ex.show;
+  return ex.show;
+}
+function markWeak(ex,ok){
+  if(!ex.item) return;
+  var k=ex.item.jp;
+  if(ok){ if(S.weak[k]>0){ S.weak[k]--; if(!S.weak[k]) delete S.weak[k]; } }
+  else S.weak[k]=(S.weak[k]||0)+1;
+}
+function doCheck(){
+  var ex=L.q[L.i]; if(L.status!=='idle'||!canCheck(ex)) return;
+  if(isCorrect(ex)){ L.status='right'; L.passed++; L.combo++; L.mood=L.combo>=3?'cheer':'happy'; markWeak(ex,true); sndGood(); if(ex.speak&&!ex.listen) speak(ex.speak); }
+  else { L.status='wrong'; L.hearts--; L.mistakes++; L.combo=0; L.mood='sad'; L.hit=true; L.q.push(ex); markWeak(ex,false); sndBad(); }
+  render();
+}
+function doContinue(){
+  if(L.status==='idle') return;
+  if(L.status==='wrong'&&L.hearts<=0){ save(); view='fail'; render(); return; }
+  L.i++;
+  if(L.i>=L.q.length){ finish(); return; }
+  initEx(); render();
+}
+function finish(){
+  var gain=L.practice?5:10+(L.mistakes===0?5:0);
+  var acc=Math.round(100*L.total/(L.total+L.mistakes));
+  var stars=L.mistakes===0?3:(L.mistakes<=2?2:1);
+  if(!L.practice){ S.done[L.lesson.id]=(S.done[L.lesson.id]||0)+1; S.stars[L.lesson.id]=Math.max(S.stars[L.lesson.id]||0,stars); }
+  award(gain);
+  L.gain=gain; L.acc=acc; L.stars=stars; view='done'; openNode=null;
+  sndWin(); render(); confetti(); window.scrollTo(0,0);
+}
+
+/* speed round */
+function startGame(){
+  var learned=ALLU.filter(function(x){return S.done[LESSONS[x.li].id];});
+  if(!learned.length) return;
+  loadVoices();
+  G={learned:learned,upTo:Math.max.apply(null,learned.map(function(x){return x.li;})),score:0,combo:0,right:0,total:0,dur:45000,end:Date.now()+45000,sel:null,locked:false};
+  nextG(); view='game'; render();
+  G.timer=setInterval(tickG,100);
+}
+function nextG(){ G.ex=mkChoice(pick(G.learned,1)[0],'see',G.upTo); G.sel=null; G.locked=false; }
+function tickG(){
+  if(!G||view!=='game'){ if(G&&G.timer) clearInterval(G.timer); return; }
+  var left=G.end-Date.now();
+  if(left<=0){ endGame(); return; }
+  var b=document.getElementById('gtime'); if(b) b.style.width=(100*left/G.dur)+'%';
+}
+function endGame(){
+  clearInterval(G.timer);
+  G.gain=Math.min(25,Math.round(G.score/25));
+  G.newBest=G.score>S.best; if(G.newBest) S.best=G.score;
+  award(G.gain); view='gameover'; if(G.score>0) sndWin(); render(); if(G.newBest) confetti();
+}
+function gamePick(i){
+  if(G.locked) return; G.locked=true; G.sel=i; G.total++;
+  if(G.ex.options[i]===G.ex.answer){ G.right++; G.combo++; G.score+=10+Math.min(G.combo,10)*2; sndGood(); speak(G.ex.speak); }
+  else { G.combo=0; sndBad(); }
+  render();
+  setTimeout(function(){ if(view!=='game'||!G) return; nextG(); render(); },420);
+}
+
+/* =====================================================
+   VIEWS
+   ===================================================== */
+function themeStyle(unitKey){ var c=UNITS[unitKey].c; return '--primary:var(--c-'+c+');--primary-d:var(--c-'+c+'-d)'; }
+function topBar(){
+  return '<div class="top"><div class="stat fire">'+I.flame+'<span>'+liveStreak()+'</span></div><div class="lvl">Level '+level()+'</div><div class="stat xp">'+I.bolt+'<span>'+S.xp+'</span></div></div>';
+}
+function tabBar(){
+  var t=[['learn','あ','Learn'],['practice','練','Practice'],['chart','表','Chart'],['me','私','Me']];
+  return '<nav class="tabs"><div>'+t.map(function(x){ return '<button class="tab '+(tab===x[0]?'on':'')+'" data-a="tab" data-t="'+x[0]+'"><b>'+x[1]+'</b>'+x[2]+'</button>'; }).join('')+'</div></nav>';
+}
+var OFF=[0,40,60,40,0,-40,-60,-40];
+function heroHTML(){
+  var cur=nextIndex(), left=Math.max(0,S.goal-todayXp()), lvPct=S.xp%100;
+  var mood=left===0?'cheer':'idle';
+  var msg, sub;
+  if(cur===0){ msg='Welcome! I’m Mochi.'; sub='Tap the glowing circle to learn your first characters.'; }
+  else if(cur>=LESSONS.length){ msg='You finished the course!'; sub='Keep your streak going with Practice and the speed round.'; }
+  else if(left===0){ msg='Daily goal reached!'; sub='Anything more is bonus XP.'; }
+  else { msg='Next up: '+LESSONS[cur].title; sub=left+' XP to reach today’s goal.'; }
+  return '<div class="hero">'+mochi(mood,76)+'<div class="txt"><h1>'+msg+'</h1><p>'+sub+'</p>'+
+    '<div><div class="mrow"><span>Level '+level()+'</span><span>'+lvPct+' / 100 XP</span></div><div class="mini lv"><i style="width:'+lvPct+'%"></i></div></div></div></div>';
+}
+function learnHTML(){
+  var cur=nextIndex(), out='', unitKeys=[];
+  LESSONS.forEach(function(l){ if(unitKeys.indexOf(l.unit)<0) unitKeys.push(l.unit); });
+  unitKeys.forEach(function(uk){
+    var u=UNITS[uk], ls=LESSONS.filter(function(l){return l.unit===uk;});
+    var dn=ls.filter(function(l){return S.done[l.id];}).length;
+    out+='<section class="themed" style="'+themeStyle(uk)+'"><div class="unit"><h2>'+u.name+'</h2><div class="jp">'+u.jp+'</div><p>'+u.blurb+'</p>'+
+      '<div class="cnt"><span>'+dn+' / '+ls.length+'</span><div class="mini"><i style="width:'+Math.round(100*dn/ls.length)+'%"></i></div></div></div><div class="path">';
+    ls.forEach(function(l,n){
+      var i=l.li, locked=!S.openAll && i>cur && !S.done[l.id];
+      var state=S.done[l.id]?'done':(i===cur?'cur':(locked?'locked':'cur2'));
+      var off=OFF[n%OFF.length];
+      out+='<div class="slot"><div class="nw" style="--o:'+off+'px">'+(state==='cur'?'<span class="tag">START</span>':'')+
+        '<button class="node '+(state==='cur2'?'':state)+'" data-a="node" data-id="'+l.id+'" aria-label="'+l.title+'">'+l.icon+(S.done[l.id]?'<span class="tick">'+I.check+'</span>':'')+'</button>'+
+        '<div class="nlabel">'+l.title+'</div>'+(S.done[l.id]?starsHTML(S.stars[l.id]||1):'')+'</div>';
+      if(openNode===l.id){
+        if(locked) out+='<div class="pop"><b>'+l.title+'</b><div class="pv" style="font-size:15px">Finish the previous lesson to unlock this one.</div></div>';
+        else {
+          var prev=l.kind==='convo'?'A real chat, '+l.dialog.length+' replies':l.items.slice(0,8).map(function(x){return x.jp;}).join(' ');
+          out+='<div class="pop"><b>'+l.title+'</b><div class="pv">'+prev+'</div>'+
+            (S.done[l.id]
+              ? '<button class="btn" data-a="quiz" data-id="'+l.id+'">Practice again</button><button class="btn ghost" data-a="intro" data-id="'+l.id+'">Review the cards</button>'
+              : '<button class="btn" data-a="intro" data-id="'+l.id+'">Start · +10 XP</button>')+'</div>';
+        }
+      }
+      out+='</div>';
+    });
+    out+='</div></section>';
+  });
+  if(cur>=LESSONS.length) out+='<div class="card"><h3>Course complete</h3><p>You finished every lesson. Use Practice to keep it fresh.</p></div>';
+  return heroHTML()+out;
+}
+function practiceHTML(){
+  var n=Object.keys(S.done).length;
+  var weakItems=ALLU.filter(function(x){return S.weak[x.jp]>0;}).sort(function(a,b){return S.weak[b.jp]-S.weak[a.jp];}).slice(0,8);
+  var out='<h1 class="pt">Practice</h1><p class="lead">Keep what you have learned fresh.</p>';
+  out+='<div class="card"><div class="cr">'+mochi('idle',56)+'<div><h3>Quick review</h3><p>'+(n?'Ten mixed questions from your finished lessons. Earns 5 XP.':'Finish your first lesson to unlock this.')+'</p></div></div><button class="btn" data-a="practice" '+(n?'':'disabled')+'>Start review</button></div>';
+  out+='<div class="card themed" style="--primary:var(--c-amber);--primary-d:var(--c-amber-d)"><div><h3>Speed round</h3><p>45 seconds. Tap the right answer fast and build a combo. Best score: <b>'+S.best+'</b></p></div><button class="btn" data-a="game" '+(n?'':'disabled')+'>Play</button></div>';
+  if(weakItems.length) out+='<div class="card"><h3>Your tricky ones</h3><p>These are the ones you missed most.</p><div class="weak">'+weakItems.map(function(x){return '<span>'+x.jp+'</span>';}).join('')+'</div><button class="btn ghost" data-a="weak">Practice these</button></div>';
+  if(!hasSpeech()) out+='<div class="card"><h3>Audio not available</h3><p>This browser can’t play spoken Japanese, so listening questions are skipped.</p></div>';
+  return out;
+}
+function chartHTML(){
+  var out='<h1 class="pt">Chart</h1><p class="lead">Everything in the course. Tap a learned item to hear it.</p>';
+  ['hira','kata'].forEach(function(sc){
+    out+='<div class="chart-h">'+(sc==='hira'?'HIRAGANA · ひらがな':'KATAKANA · カタカナ')+'</div><div class="cgrid">';
+    ALLU.filter(function(x){return x.script===sc;}).forEach(function(x){
+      var on=!!S.done[x.lid];
+      out+='<button class="cell '+(on?'':'off')+'" '+(on?'data-a="say" data-s="'+x.jp+'"':'disabled')+'>'+x.jp+'<small>'+(on?x.rom:'?')+'</small></button>';
+    });
+    out+='</div>';
+  });
+  out+='<div class="chart-h">WORDS AND PHRASES</div><div class="wgrid">';
+  ALLU.filter(function(x){return x.script==='word';}).forEach(function(x){
+    var on=!!S.done[x.lid];
+    out+='<button class="wcell '+(on?'':'off')+'" '+(on?'data-a="say" data-s="'+x.jp+'"':'disabled')+'><b>'+x.jp+'</b><small>'+(on?x.rom+' · '+x.en:'Locked')+'</small></button>';
+  });
+  return out+'</div>';
+}
+function meHTML(){
+  var n=Object.keys(S.done).length, lvPct=S.xp%100;
+  return '<h1 class="pt">Me</h1><p class="lead">Your progress is saved in this browser.</p>'+
+    '<div class="kv"><div><b>'+S.xp+'</b><span>Total XP</span></div><div><b>'+liveStreak()+'</b><span>Day streak</span></div><div><b>'+n+'/'+LESSONS.length+'</b><span>Lessons</span></div></div>'+
+    '<div class="card"><div class="mrow"><span>Level '+level()+'</span><span>'+lvPct+' / 100 XP</span></div><div class="mini lv"><i style="width:'+lvPct+'%"></i></div></div>'+
+    '<div class="card"><h3>Daily goal</h3><p>XP to earn each day.</p><div class="seg">'+[10,20,30,50].map(function(g){return '<button class="'+(S.goal===g?'on':'')+'" data-a="goal" data-g="'+g+'">'+g+'</button>';}).join('')+'</div></div>'+
+    '<div class="card"><div class="row"><div><h3>Sound effects</h3><p>Chimes for right and wrong answers.</p></div><button class="btn ghost sm" data-a="mute">'+(S.muted?'Off':'On')+'</button></div></div>'+
+    '<div class="card"><div class="row"><div><h3>Listening questions</h3><p>Questions where you tap what you hear.</p></div><button class="btn ghost sm" data-a="listentoggle">'+(S.listen===false?'Off':'On')+'</button></div></div>'+
+    '<div class="card"><h3>Test Japanese voice</h3><p>'+(hasSpeech()?'Plays こんにちは and tells us what your device does.':'This browser can’t play spoken Japanese.')+'</p><div><button class="btn ghost sm" data-a="voicetest" '+(hasSpeech()?'':'disabled')+'>Play sound</button></div>'+(voiceInfo?'<p><b>'+voiceInfo+'</b></p>':'')+'<p>On iPhone you can add a voice in Settings, Accessibility, Spoken Content, Voices, Japanese.</p></div>'+
+    '<div class="card"><div class="row"><div><h3>Unlock all lessons</h3><p>Jump ahead if you already know some Japanese.</p></div><button class="btn ghost sm" data-a="openall">'+(S.openAll?'On':'Off')+'</button></div></div>'+
+    '<div class="card"><h3>Progress backup</h3><p>'+(cloud.state==='saved'?'Saved to your Claude account. You can close the app and come back on any device.':cloud.state==='checking'?'Checking your saved progress…':cloud.state==='error'?'Could not save to your account just now. It is still saved on this device and will retry on your next move.':'Saved on this phone. Open the app from the same home screen icon each time. Deleting the icon deletes your progress.')+'</p></div>'+
+    '<div class="card"><h3>Start over</h3><p>Clears XP, streak and finished lessons.</p><div><button class="btn ghost sm" data-a="resetask">Reset progress</button></div></div>'+
+    (resetAsk?'<div class="veil"><div class="dlg">'+mochi('sad',70)+'<h2>Reset everything?</h2><p>This can’t be undone.</p><button class="btn danger" data-a="reset">Reset</button><button class="btn ghost" data-a="resetno">Keep my progress</button></div></div>':'');
+}
+
+/* intro cards */
+function introHTML(){
+  var c=T.cards[T.i], last=T.i===T.cards.length-1, l=T.lesson, body;
+  var dots=T.cards.map(function(_,i){ return '<i class="'+(i<=T.i?'on':'')+'"></i>'; }).join('');
+  if(c.tip){
+    body='<div class="say">'+mochi('happy',84)+'<div class="bub"><b style="font-size:18px">Before we start</b><span style="font-weight:500">'+c.tip+'</span></div></div>';
+  } else {
+    var it=c.item, word=it.script==='word', cls=word?(it.jp.length>7?'word long':'word'):'';
+    body='<div class="fcard"><button class="kana '+cls+'" data-a="say" data-s="'+it.jp+'" aria-label="Hear '+it.rom+'">'+it.jp+'</button>'+
+      '<div class="rom">'+it.rom+'</div>'+(it.en?'<div class="en">'+it.en+'</div>':'')+
+      (hintFor(it)?'<p class="hint">'+hintFor(it)+'</p>':'')+
+      (hasSpeech()?'<button class="btn ghost sm" data-a="say" data-s="'+it.jp+'">Hear it</button>':'')+'</div>';
+  }
+  return '<div class="lesson themed" style="'+themeStyle(l.unit)+'"><header class="lh"><button class="ib" data-a="home" aria-label="Close">'+I.x+'</button><div class="dots">'+dots+'</div><span style="width:40px"></span></header>'+
+    '<main class="meet">'+body+'</main>'+
+    '<footer class="lf"><div class="btnrow">'+(T.i>0?'<button class="btn ghost" data-a="iback">Back</button>':'')+
+    '<button class="btn" data-a="'+(last?'quiz':'inext')+'" data-id="'+l.id+'">'+(last?'Start quiz':'Next')+'</button></div></footer></div>';
+}
+
+/* quiz */
+function lessonHTML(){
+  var ex=L.q[L.i], body='', chk=L.status!=='idle', pct=Math.round(100*L.passed/L.total);
+  if(ex.t==='choice'){
+    body+='<h2 class="q">'+ex.prompt+'</h2>';
+    if(ex.talk){
+      body+='<div class="chat"><div class="av">'+I.person+'</div><div class="bub"><b>'+ex.npc.jp+'</b><small>'+ex.npc.rom+'</small><em>'+ex.npc.en+'</em>'+
+        (hasSpeech()?'<button class="ib sp" data-a="say" data-s="'+ex.speak+'" aria-label="Play audio">'+I.spk+'</button>':'')+'</div></div>'+
+        (ex.ctx?'<div class="ctx">'+ex.ctx+'</div>':'');
+    }
+    if(ex.big){
+      var bw=ex.item.script==='word'?(ex.big.length>7?'word long':'word'):'';
+      body+='<div class="big '+bw+'" '+(hasSpeech()?'data-a="say" data-s="'+ex.speak+'"':'')+'><span>'+ex.big+'</span>'+(ex.sub?'<small>'+ex.sub+'</small>':'')+'</div>';
+    }
+    if(ex.listen) body+='<button class="speak" data-a="say" data-s="'+ex.speak+'" aria-label="Play audio">'+I.speaker+'</button>'+(chk?'':'<button class="btn ghost sm" style="align-self:center" data-a="skiplisten">Can’t listen now</button>');
+    body+='<div class="opts '+(ex.jpOpts&&!ex.longOpts?'grid':'')+(ex.longOpts?' long':'')+'">'+ex.options.map(function(o,i){
+      var c='';
+      if(chk){ if(o===ex.answer) c='right'; else if(L.sel===i) c='wrong'; } else if(L.sel===i) c='sel';
+      return '<button class="opt '+(ex.talk?'talk ':'')+c+'" data-a="opt" data-i="'+i+'" '+(chk?'disabled':'')+'>'+(ex.talk?'<span>'+o+'</span><small>'+ex.rmap[o]+'</small>':o)+'</button>';
+    }).join('')+'</div>';
+  } else if(ex.t==='type'){
+    var tw=ex.item.script==='word'?(ex.big.length>7?'word long':'word'):'';
+    body+='<h2 class="q">'+ex.prompt+'</h2><div class="big '+tw+'" '+(hasSpeech()?'data-a="say" data-s="'+ex.speak+'"':'')+'><span>'+ex.big+'</span></div>'+
+      '<input class="inp" id="typed" type="text" inputmode="latin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Type with English letters" value="'+L.typed+'" '+(chk?'disabled':'')+'>';
+  } else if(ex.t==='bank'){
+    body+='<h2 class="q">'+ex.prompt+'</h2><div class="jpline"><span>'+ex.head+(hasSpeech()&&!ex.en?' <button class="ib sp" data-a="say" data-s="'+ex.speak+'" aria-label="Play audio">'+I.spk+'</button>':'')+'</span>'+(ex.sub?'<small>'+ex.sub+'</small>':'')+'</div>'+
+      '<div class="slots">'+L.bank.map(function(ti,pos){ var t=ex.tiles[ti]; return '<button class="tile" data-a="untile" data-p="'+pos+'" '+(chk?'disabled':'')+'><span>'+t.t+'</span>'+(t.s?'<small>'+t.s+'</small>':'')+'</button>'; }).join('')+'</div>'+
+      '<div class="tiles">'+ex.tiles.map(function(t,i){ return '<button class="tile '+(L.bank.indexOf(i)>=0?'used':'')+'" data-a="tile" data-i="'+i+'" '+(chk?'disabled':'')+'><span>'+t.t+'</span>'+(t.s?'<small>'+t.s+'</small>':'')+'</button>'; }).join('')+'</div>';
+  } else if(ex.t==='match'){
+    var m=L.m, byId={}; ex.pairs.forEach(function(p){ byId[p.id]=p; });
+    var fa=ex.pairs.some(function(p){return p.a.length>3;})?'18px':'28px';
+    body+='<h2 class="q">'+ex.prompt+'</h2><div class="mt">';
+    for(var r=0;r<m.L.length;r++){
+      var a=m.L[r], b=m.R[r];
+      var ca=m.done.indexOf(a)>=0?'gone':(m.pend&&m.pend.side==='L'&&m.pend.id===a?'sel':'');
+      var cb=m.done.indexOf(b)>=0?'gone':(m.pend&&m.pend.side==='R'&&m.pend.id===b?'sel':'');
+      if(L.flash){ if(L.flash.l===a&&!ca) ca+=' wrong'; if(L.flash.r===b&&!cb) cb+=' wrong'; }
+      body+='<button class="opt '+ca+'" data-a="mp" data-side="L" data-id="'+a+'" style="font-size:'+fa+'">'+byId[a].a+'</button>'+
+            '<button class="opt '+cb+'" data-a="mp" data-side="R" data-id="'+b+'">'+byId[b].b+'</button>';
+    }
+    body+='</div>';
+  }
+  var fb='', label='Check';
+  if(L.status==='right'){
+    var cheers=['Nice!','Great job!','Correct!','Sugoi!','Perfect!'];
+    fb='<div class="fbrow">'+mochi(L.mood,52)+'<div class="fb"><b>'+cheers[L.i%cheers.length]+'</b>'+(L.combo>=3?'<span>'+L.combo+' in a row!</span>':'')+'</div></div>'; label='Continue';
+  }
+  if(L.status==='wrong'){ fb='<div class="fbrow">'+mochi('sad',52)+'<div class="fb"><b>Not quite</b><span>Answer: '+answerText(ex)+'</span></div></div>'; label='Continue'; }
+  var can=chk||canCheck(ex);
+  var quit=L.quitAsk?'<div class="veil"><div class="dlg">'+mochi('sad',70)+'<h2>Quit this lesson?</h2><p>You will lose the progress you made in it.</p><button class="btn" data-a="quitno">Keep learning</button><button class="btn ghost" data-a="quityes">Quit</button></div></div>':'';
+  return '<div class="lesson themed" style="'+themeStyle(L.lesson.unit)+'"><header class="lh"><button class="ib" data-a="quitask" aria-label="Quit lesson">'+I.x+'</button><div class="bar"><i style="width:'+pct+'%"></i></div>'+
+    (L.combo>=3?'<span class="combo">x'+L.combo+'</span>':'')+'<div class="hearts '+(L.hit?'hit':'')+'">'+I.heart+'<span>'+L.hearts+'</span></div></header>'+
+    '<main class="lm">'+body+'</main>'+
+    '<footer class="lf '+(L.status==='idle'?'':L.status)+'">'+fb+'<button class="btn" id="go" data-a="'+(chk?'cont':'check')+'" '+(can?'':'disabled')+'>'+label+'</button></footer>'+quit+'</div>';
+}
+function doneHTML(){
+  return '<div class="end themed" style="'+themeStyle(L.lesson.unit)+'">'+mochi('cheer',120)+'<h1>'+(L.practice?'Practice complete':'Lesson complete')+'</h1>'+(L.practice?'':bigStars(L.stars))+
+    '<div class="chips"><div class="chip"><span>XP earned</span><b>+'+L.gain+'</b></div><div class="chip"><span>Accuracy</span><b>'+L.acc+'%</b></div><div class="chip"><span>Streak</span><b>'+liveStreak()+'</b></div></div>'+
+    '<button class="btn" data-a="home">Continue</button></div>';
+}
+function failHTML(){
+  return '<div class="end themed" style="'+themeStyle(L.lesson.unit)+'">'+mochi('sad',120)+'<h1>Out of hearts</h1><p class="lead">That’s okay. Take another look at the cards and try again.</p>'+
+    '<div class="btnrow">'+(L.practice?'':'<button class="btn ghost" data-a="intro" data-id="'+L.lesson.id+'">Review the cards</button>')+'<button class="btn" data-a="retry">Try again</button><button class="btn ghost" data-a="home">Back to path</button></div></div>';
+}
+function gameHTML(){
+  var ex=G.ex, chk=G.locked, bw=ex.item.script==='word'?(ex.big.length>7?'word long':'word'):'';
+  return '<div class="lesson themed" style="--primary:var(--c-amber);--primary-d:var(--c-amber-d)"><header class="lh"><button class="ib" data-a="gquit" aria-label="Quit">'+I.x+'</button>'+
+    '<div class="bar gbar"><i id="gtime" style="width:'+Math.max(0,100*(G.end-Date.now())/G.dur)+'%"></i></div>'+(G.combo>=3?'<span class="combo">x'+G.combo+'</span>':'')+'<div class="gscore">'+G.score+'</div></header>'+
+    '<main class="gcenter"><h2 class="q" style="text-align:center">'+ex.prompt+'</h2><div class="big '+bw+'" style="align-self:center"><span>'+ex.big+'</span>'+(ex.sub?'<small>'+ex.sub+'</small>':'')+'</div>'+
+    '<div class="gopts">'+ex.options.map(function(o,i){
+      var c=''; if(chk){ if(o===ex.answer) c='right'; else if(G.sel===i) c='wrong'; }
+      return '<button class="opt '+c+'" data-a="gopt" data-i="'+i+'" '+(chk?'disabled':'')+'>'+o+'</button>';
+    }).join('')+'</div></main></div>';
+}
+function gameoverHTML(){
+  var acc=G.total?Math.round(100*G.right/G.total):0;
+  return '<div class="end themed" style="--primary:var(--c-amber);--primary-d:var(--c-amber-d)">'+mochi(G.score>0?'cheer':'sad',120)+'<h1>'+(G.newBest?'New best!':'Time’s up!')+'</h1>'+
+    '<div class="chips"><div class="chip"><span>Score</span><b>'+G.score+'</b></div><div class="chip"><span>Correct</span><b>'+G.right+'/'+G.total+'</b></div><div class="chip"><span>XP</span><b>+'+G.gain+'</b></div></div>'+
+    '<p class="lead">Accuracy '+acc+'%. Best score: '+S.best+'.</p>'+
+    '<div class="btnrow"><button class="btn" data-a="game">Play again</button><button class="btn ghost" data-a="home">Back</button></div></div>';
+}
+
+function render(){
+  var h;
+  if(view==='lesson') h=lessonHTML();
+  else if(view==='intro') h=introHTML();
+  else if(view==='done') h=doneHTML();
+  else if(view==='fail') h=failHTML();
+  else if(view==='game') h=gameHTML();
+  else if(view==='gameover') h=gameoverHTML();
+  else {
+    var page=tab==='learn'?learnHTML():tab==='practice'?practiceHTML():tab==='chart'?chartHTML():meHTML();
+    h=topBar()+'<main class="page">'+page+'</main>'+tabBar();
+  }
+  app.innerHTML=h;
+  if(view==='lesson'){
+    var ex=L.q[L.i];
+    if(L.auto){ L.auto=false; setTimeout(function(){ speak(ex.speak); },150); }
+    if(ex.t==='type'&&L.status==='idle'){ var el=document.getElementById('typed'); if(el) el.focus(); }
+  }
+  if(view==='intro'&&T.auto){
+    T.auto=false; var c=T.cards[T.i]; if(c&&c.item) setTimeout(function(){ speak(c.item.jp); },200);
+  }
+}
+
+/* =====================================================
+   EVENTS
+   ===================================================== */
+var A={
+  tab:function(d){ tab=d.t; openNode=null; render(); window.scrollTo(0,0); },
+  node:function(d){ openNode=openNode===d.id?null:d.id; render(); },
+  intro:function(d){ startIntro(d.id); },
+  inext:function(){ T.i++; T.auto=true; render(); },
+  iback:function(){ T.i--; T.auto=true; render(); },
+  quiz:function(d){ startQuiz(d.id); },
+  practice:function(){ startPractice(false); },
+  weak:function(){ startPractice(true); },
+  game:function(){ startGame(); },
+  gopt:function(d){ gamePick(+d.i); },
+  gquit:function(){ if(G&&G.timer) clearInterval(G.timer); view='learn'; tab='practice'; G=null; render(); },
+  say:function(d){ speak(d.s); },
+  opt:function(d){ if(L.status!=='idle') return; L.sel=+d.i; render(); },
+  skiplisten:function(){
+    if(L.status!=='idle') return;
+    L.q.splice(L.i,1); L.total=Math.max(1,L.total-1);
+    if(L.i>=L.q.length){ finish(); return; }
+    initEx(); render();
+  },
+  voicetest:function(){
+    voiceInfo='Testing…'; render();
+    loadVoices();
+    var name=jaVoice?(jaVoice.name+' ('+jaVoice.lang+')'):'no Japanese voice listed, using the system default';
+    speak('こんにちは',function(r){
+      voiceInfo=(r==='ok')?('Playing. Voice: '+name+'. If you heard it, audio works.'):(r==='silent')?('Nothing started. Voice: '+name+'. Check silent mode and volume.'):('Problem: '+r+'. Voice: '+name+'.');
+      if(view==='learn'&&tab==='me') render();
+    });
+  },
+  listentoggle:function(){ S.listen=(S.listen===false); save(); render(); },
+  check:doCheck, cont:doContinue,
+  tile:function(d){ if(L.status!=='idle') return; var i=+d.i; if(L.bank.indexOf(i)<0){ L.bank.push(i); render(); } },
+  untile:function(d){ if(L.status!=='idle') return; L.bank.splice(+d.p,1); render(); },
+  mp:function(d){
+    var m=L.m, ex=L.q[L.i];
+    if(L.status!=='idle'||m.done.indexOf(d.id)>=0) return;
+    if(!m.pend||m.pend.side===d.side){ m.pend={side:d.side,id:d.id}; if(d.side==='L') speak(d.id); render(); return; }
+    var l=d.side==='L'?d.id:m.pend.id, r=d.side==='R'?d.id:m.pend.id;
+    m.pend=null;
+    if(l===r){
+      m.done.push(l); sndGood();
+      if(m.done.length===ex.pairs.length){ L.status='right'; L.passed++; L.combo++; L.mood=L.combo>=3?'cheer':'happy'; }
+      render();
+    } else {
+      sndBad(); L.flash={l:l,r:r}; render();
+      setTimeout(function(){ if(L&&L.flash){ L.flash=null; if(view==='lesson') render(); } },450);
+    }
+  },
+  quitask:function(){ L.quitAsk=true; render(); },
+  quitno:function(){ L.quitAsk=false; render(); },
+  quityes:function(){ view='learn'; L=null; render(); },
+  home:function(){ view='learn'; tab=tab==='practice'&&G?'practice':tab; L=null; T=null; G=null; render(); window.scrollTo(0,0); },
+  retry:function(){ if(L.practice) startPractice(L.weak); else startQuiz(L.lesson.id); },
+  goal:function(d){ S.goal=+d.g; save(); render(); },
+  mute:function(){ S.muted=!S.muted; save(); render(); },
+  openall:function(){ S.openAll=!S.openAll; save(); render(); },
+  resetask:function(){ resetAsk=true; render(); },
+  resetno:function(){ resetAsk=false; render(); },
+  reset:function(){ S.xp=0; S.streak=0; S.last=''; S.done={}; S.stars={}; S.weak={}; S.day=''; S.dayXp=0; S.best=0; S.resetAt=Date.now(); save(); resetAsk=false; render(); }
+};
+app.addEventListener('click',function(e){
+  var el=e.target.closest('[data-a]'); if(!el||el.disabled) return;
+  var f=A[el.dataset.a]; if(f) f(el.dataset);
+});
+app.addEventListener('input',function(e){
+  if(e.target.id==='typed'){ L.typed=e.target.value; var b=document.getElementById('go'); if(b) b.disabled=!canCheck(L.q[L.i]); }
+});
+document.addEventListener('keydown',function(e){
+  if(e.key!=='Enter') return;
+  if(view==='lesson'&&!L.quitAsk){ if(L.status==='idle') doCheck(); else doContinue(); }
+  else if(view==='intro'){ if(T.i<T.cards.length-1) A.inext(); else A.quiz({id:T.lesson.id}); }
+});
+if('serviceWorker' in navigator){ window.addEventListener('load',function(){ navigator.serviceWorker.register('sw.js').catch(function(){}); }); }
+render();
+initCloud();
+</script>
+
+</body>
+</html>
